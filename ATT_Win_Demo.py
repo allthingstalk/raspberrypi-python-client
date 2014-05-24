@@ -23,9 +23,9 @@ def on_message(actuatorName, value):
 
 #set up the ATT internet of things platform
 IOT.on_message = on_message
-IOT.ClientId = "put your client id here"
-IOT.ClientKey = "put your client id here"
-IOT.DeviceId = "put your device id here"
+IOT.ClientId = "52ed3f2b56644370f0129c97"
+IOT.ClientKey = "cvsptzspc5n"
+IOT.DeviceId = "5370795d552e1345a02c5cbb"
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
