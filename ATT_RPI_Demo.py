@@ -45,7 +45,7 @@ IOT.DeviceId = "put your device id here"
 IOT.connect()
 IOT.addAsset(In1Name, "a push button", False, "bool")
 IOT.addAsset(Out1Name, "a led", True, "bool")
-IOT.subscribe()                                        #starts the bi-directional communication
+IOT.subscribe("Put the mac address here")              #starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
 while True:

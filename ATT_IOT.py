@@ -68,25 +68,27 @@ def addAsset(name, description, isActuator, assetType):
         body = body + 'actuator'
     else:
         body = body + 'sensor'
-    loc = "/api/v1/device/" + DeviceId + "/asset"
-    body = body + '","profile": {"type":"' + assetType + '" } }';
+    body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
 
-    print("HTTP POST: " + loc)
+    print("HTTP POST: /api/asset")
     print("HTTP HEADER: " + str(headers))
     print("HTTP BODY:" + body)
 
-    _httpClient.request("POST", loc, body, headers)
+    _httpClient.request("POST", "/api/asset", body, headers)
     response = _httpClient.getresponse()
     print(response.status, response.reason)
     print(response.read())
 
 #start the mqtt client and make certain that it can receive data from the IOT platform
-def subscribe(mqttServer = "188.64.53.92", port = 1883):
+#mac: the mac address of the device to uniquely identify it accross the network.
+#mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
+#port: (optional) the port number to communicate on with the mqtt server.
+def subscribe(mac, mqttServer = "188.64.53.92", port = 1883):
     global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient.close()
     _httpClient = None                                                             #the http client is no longer used, so free the mem.
-    _mqttClient = mqtt.Client("test1")
+    _mqttClient = mqtt.Client(mac)
     _mqttClient.on_connect = on_connect
     _mqttClient.on_message = on_MQTTmessage
     _mqttClient.on_subscribe = on_MQTTSubscribed
