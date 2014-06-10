@@ -9,19 +9,22 @@ import httplib                                 # for http comm
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, rc):
-    msg = "Connected to mqtt with result code "+str(rc)
-    print(msg)
-    if DeviceId is None:
-        print("device id not specified")
-        raise Exception("DeviceId not specified")
-    topic = "/m/" + ClientId + "/#"
-    print("subscribing to: " + topic)
-    result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
-    print(result)
-    topic = "/s" + topic[2:]
-    print("subscribing to: " + topic)
-    result = client.subscribe(topic)
-    print(result)
+    if rc == 0:
+        msg = "Connected to mqtt broker with result code "+str(rc)
+        print(msg)
+        if DeviceId is None:
+            print("device id not specified")
+            raise Exception("DeviceId not specified")
+        topic = "/m/" + ClientId + "/#"
+        print("subscribing to: " + topic)
+        result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
+        print(result)
+        topic = "/s" + topic[2:]
+        print("subscribing to: " + topic)
+        result = client.subscribe(topic)
+        print(result)
+    else:
+        print("failed to connect to mqtt broker")
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -71,11 +74,11 @@ def addAsset(name, description, isActuator, assetType):
     body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
 
-    print("HTTP POST: /api/asset")
+    print("HTTP POST: /api/asset?idFromName=true")
     print("HTTP HEADER: " + str(headers))
     print("HTTP BODY:" + body)
 
-    _httpClient.request("POST", "/api/asset", body, headers)
+    _httpClient.request("POST", "/api/asset?idFromName=true", body, headers)
     response = _httpClient.getresponse()
     print(response.status, response.reason)
     print(response.read())

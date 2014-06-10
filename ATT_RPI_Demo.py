@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+#important: before running this demo, make certain that you import the library
+#'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
+
 import RPi.GPIO as GPIO                            #provides pin support
 import ATT_IOT as IOT                              #provide cloud support
 from time import sleep                             #pause the app
