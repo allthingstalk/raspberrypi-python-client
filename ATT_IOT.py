@@ -111,5 +111,5 @@ def send(value, sensorId):
         raise Exception("sensorId not specified")
     timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
     toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
-    topic = "/f/" + ClientId + "/s/" + DeviceId + "/" + sensorId            # also need a topic to publish to
+    topic = "/f/" + ClientId + "/s/" + DeviceId + sensorId            # also need a topic to publish to
     _mqttClient.publish(topic, toSend, 0, False)
