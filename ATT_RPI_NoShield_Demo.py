@@ -31,7 +31,7 @@ GPIO.setup(Out1Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #, pull_up_down=GPIO.PUD
 
 #callback: handles values sent from the cloudapp to the device
 def on_message(actuatorId, value):
-    if actuatorId.endswith(Out1Name) == true:
+    if actuatorId.endswith(Out1Name) == True:
         value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             GPIO.output(Out1Pin, True)
@@ -42,7 +42,7 @@ def on_message(actuatorId, value):
         else:
             print("unknown value: " + value)
     else:
-        print("unknown actuator: " + actuatorName)
+        print("unknown actuator: " + actuatorId)
 IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
