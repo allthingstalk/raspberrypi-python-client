@@ -1,18 +1,24 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
+#also make certain that ATT_IOT is in the same directory as this script.
 
 import RPi.GPIO as GPIO                            #provides pin support
 import ATT_IOT as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
+#set up the ATT internet of things platform
+IOT.ClientId = "put your client id here"
+IOT.ClientKey = "put your client id here"
+IOT.DeviceId = "put your device id here"
 
-In1Name = "button1"                                #name of the button
+In1Name = "Put the name of your sensor"                                #name of the button
 In1Prev = False                                    #previous value of the button
 In1Pin = 23
 
-Out1Name = "led1"
+Out1Name = "Put the name of your actuator"
 Out1Pin = 24
 
 #setup GPIO using Board numbering
@@ -24,8 +30,8 @@ GPIO.setup(In1Pin, GPIO.OUT)
 GPIO.setup(Out1Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #, pull_up_down=GPIO.PUD_DOWN
 
 #callback: handles values sent from the cloudapp to the device
-def on_message(actuatorName, value):
-    if actuatorName == Out1Name:
+def on_message(actuatorId, value):
+    if actuatorId.endswith(Out1Name) == true:
         value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             GPIO.output(Out1Pin, True)
@@ -37,18 +43,13 @@ def on_message(actuatorName, value):
             print("unknown value: " + value)
     else:
         print("unknown actuator: " + actuatorName)
-
-#set up the ATT internet of things platform
 IOT.on_message = on_message
-IOT.ClientId = "put your client id here"
-IOT.ClientKey = "put your client id here"
-IOT.DeviceId = "put your device id here"
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(In1Name, "a push button", False, "bool")
-IOT.addAsset(Out1Name, "a led", True, "bool")
-IOT.subscribe("Put the mac address here")              #starts the bi-directional communication
+IOT.addAsset(In1Name, "put your description here", False, "bool")
+IOT.addAsset(Out1Name, "put your description here", True, "bool")
+IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
 while True:
