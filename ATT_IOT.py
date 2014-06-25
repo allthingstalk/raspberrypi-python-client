@@ -15,11 +15,11 @@ def on_connect(client, userdata, rc):
         if DeviceId is None:
             print("device id not specified")
             raise Exception("DeviceId not specified")
-        topic = "/m/" + ClientId + "/#"
+        topic = "m/" + ClientId + "/d/" + DeviceId + "/#"
         print("subscribing to: " + topic)
         result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
         print(result)
-        topic = "/s" + topic[2:]
+        topic = "s" + topic[1:]
         print("subscribing to: " + topic)
         result = client.subscribe(topic)
         print(result)
@@ -111,5 +111,5 @@ def send(value, sensorId):
         raise Exception("sensorId not specified")
     timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
     toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
-    topic = "/f/" + ClientId + "/s/" + DeviceId + sensorId            # also need a topic to publish to
+    topic = "f/" + ClientId + "/a/" + DeviceId + sensorId            # also need a topic to publish to
     _mqttClient.publish(topic, toSend, 0, False)
