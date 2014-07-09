@@ -25,7 +25,6 @@ def on_connect(client, userdata, rc):
         print(result)
     else:
         print("failed to connect to mqtt broker " )
-	print(rc)
 
 
 # The callback for when a PUBLISH message is received from the server.
