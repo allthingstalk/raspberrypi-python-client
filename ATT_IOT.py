@@ -24,7 +24,8 @@ def on_connect(client, userdata, rc):
         result = client.subscribe(topic)
         print(result)
     else:
-        print("failed to connect to mqtt broker")
+        print("failed to connect to mqtt broker " )
+	print(rc)
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -59,7 +60,7 @@ DeviceId = None
 ClientKey = None
 
 #connect with the http server
-def connect(httpServer="http://beta.smartliving.io"):
+def connect(httpServer="beta.smartliving.io"):
     global _httpClient, _httpServerName                                         # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient = httplib.HTTPConnection(httpServer)
     _httpServerName = httpServer
@@ -87,10 +88,12 @@ def addAsset(id, name, description, isActuator, assetType):
 #start the mqtt client and make certain that it can receive data from the IOT platform
 #mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
 #port: (optional) the port number to communicate on with the mqtt server.
-def subscribe(mqttServer = "188.64.53.92", port = 1883):                        #188.64.53.92
-    global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
+def subscribe(mqttServer = "188.64.53.92", port = 1883):
+    global _mqttClient, _httpClient, DeviceId                                            # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient.close()
     _httpClient = None                                                             #the http client is no longer used, so free the mem.
+    if len(DeviceId) > 23:
+        DeviceId = DeviceId[23:]
     _mqttClient = mqtt.Client(DeviceId)
     _mqttClient.on_connect = on_connect
     _mqttClient.on_message = on_MQTTmessage
