@@ -59,13 +59,13 @@ DeviceId = None
 ClientKey = None
 
 #connect with the http server
-def connect(httpServer="att-2.apphb.com"):
+def connect(httpServer="http://beta.smartliving.io"):
     global _httpClient, _httpServerName                                         # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient = httplib.HTTPConnection(httpServer)
     _httpServerName = httpServer
     print("connected with http server")
 
-def addAsset(name, description, isActuator, assetType):
+def addAsset(id, name, description, isActuator, assetType):
     body = '{"name":"' + name + '","description":"' + description + '","is":"'
     if isActuator:
         body = body + 'actuator'
@@ -73,7 +73,7 @@ def addAsset(name, description, isActuator, assetType):
         body = body + 'sensor'
     body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/api/asset/" + DeviceId + name
+    url = "/api/asset/" + DeviceId + id
 	
     print("HTTP PUT: " + url)
     print("HTTP HEADER: " + str(headers))
@@ -87,7 +87,7 @@ def addAsset(name, description, isActuator, assetType):
 #start the mqtt client and make certain that it can receive data from the IOT platform
 #mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
 #port: (optional) the port number to communicate on with the mqtt server.
-def subscribe(mqttServer = "188.64.51.226", port = 1883):                        #188.64.53.92
+def subscribe(mqttServer = "188.64.53.92", port = 1883):                        #188.64.53.92
     global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient.close()
     _httpClient = None                                                             #the http client is no longer used, so free the mem.

@@ -8,7 +8,9 @@ from time import sleep                             #pause the app
 
 
 In1Name = "Put the name of your sensor"                                #name of the button
+In1Id = "1"                                                            #the id of the button, don't uses spaces. required for the att platform
 Out1Name = "Put the name of your actuator"
+Out1Id = "2"
 
 
 #callback: handles values sent from the cloudapp to the device
