@@ -14,17 +14,19 @@ Out1Id = "2"
 
 
 #callback: handles values sent from the cloudapp to the device
-def on_message(actuatorName, value):
-    if actuatorName == Out1Name:
+def on_message(id, value):
+    if id.endswith(Out1Id) == True:
         value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             print("true on " + Out1Name)
+            IOT.send("true", Out1Id)                #provide feedback to the cloud that the operation was succesful
         elif value == "false":
             print("false on " + Out1Name)
+            IOT.send("false", Out1Id)                #provide feedback to the cloud that the operation was succesful
         else:
             print("unknown value: " + value)
     else:
-        print("unknown actuator: " + actuatorName)
+        print("unknown actuator: " + id)
 
 #set up the ATT internet of things platform
 IOT.on_message = on_message
@@ -34,8 +36,8 @@ IOT.DeviceId = "put your device id here"
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(In1Name, "put your description here", False, "bool")
-IOT.addAsset(Out1Name, "put your description here", True, "bool")
+IOT.addAsset(In1Id, In1Name, "put your description here", False, "bool")
+IOT.addAsset(Out1Id, Out1Name, "put your description here", True, "bool")
 IOT.subscribe()                                        		#starts the bi-directional communication
 
 nextVal = True;
@@ -43,10 +45,10 @@ nextVal = True;
 while True:
     if nextVal == True:
         print(In1Name + " activated")
-        IOT.send("true", In1Name)
+        IOT.send("true", In1Id)
         nextVal = False
     else:
         print(In1Name + " deactivated")
-        IOT.send("false", In1Name)
+        IOT.send("false", In1Id)
         nextVal = True
     sleep(5)

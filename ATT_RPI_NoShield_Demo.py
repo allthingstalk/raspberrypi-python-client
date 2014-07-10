@@ -28,8 +28,8 @@ Out1Id = "2"
 GPIO.setmode(GPIO.BOARD)
 
 #set up the pins
-GPIO.setup(In1Pin, GPIO.OUT)
 GPIO.setup(Out1Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #, pull_up_down=GPIO.PUD_DOWN
+GPIO.setup(In1Pin, GPIO.OUT)
 
 #callback: handles values sent from the cloudapp to the device
 def on_message(actuatorId, value):
