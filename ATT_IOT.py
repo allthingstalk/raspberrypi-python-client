@@ -88,12 +88,14 @@ def addAsset(id, name, description, isActuator, assetType):
 #mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
 #port: (optional) the port number to communicate on with the mqtt server.
 def subscribe(mqttServer = "188.64.53.92", port = 1883):
-    global _mqttClient, _httpClient, DeviceId                                            # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
+    global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient.close()
     _httpClient = None                                                             #the http client is no longer used, so free the mem.
     if len(DeviceId) > 23:
-        DeviceId = DeviceId[23:]
-    _mqttClient = mqtt.Client(DeviceId)
+        mqttId = DeviceId[:23]
+    else:
+        mqttId = DeviceId
+    _mqttClient = mqtt.Client(mqttId)
     _mqttClient.on_connect = on_connect
     _mqttClient.on_message = on_MQTTmessage
     _mqttClient.on_subscribe = on_MQTTSubscribed
