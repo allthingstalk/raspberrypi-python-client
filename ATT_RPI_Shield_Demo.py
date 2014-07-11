@@ -9,16 +9,16 @@ import ATT_IOT as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
-IOT.DeviceId = "put your device id here"
-IOT.ClientId = "put your client id here"
-IOT.ClientKey = "put your client id here"
+IOT.DeviceId = "YourDeviceIdHere"
+IOT.ClientId = "YourClientIdHere"
+IOT.ClientKey = "YourClientKeyHere"
 
-sensorName = "Put the name of your sensor"            #name of the sensor
+sensorName = "Button"            #name of the sensor
 sensorPrev = False                                    #previous value of the sensor (only send a value when a change occured)
 sensorPin = 2
 sensorId = "1"                                                            #the id of the button, don't uses spaces. required for the att platform
 
-actuatorName = "Put the name of your actuator"
+actuatorName = "Diode"
 actuatorPin = 4
 actuatorId = "2"
 
@@ -45,8 +45,8 @@ IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(sensorId, sensorName, "put your description here", False, "bool")
-IOT.addAsset(actuatorId, actuatorName, "put your description here", True, "bool")
+IOT.addAsset(sensorId, sensorName, "Push button", False, "bool")
+IOT.addAsset(actuatorId, actuatorName, "Light Emitting Diode", True, "bool")
 IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
