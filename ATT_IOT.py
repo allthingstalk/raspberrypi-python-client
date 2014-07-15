@@ -24,19 +24,19 @@ def on_connect(client, userdata, rc):
         result = client.subscribe(topic)
         print(result)
     else:
-        print("failed to connect to mqtt broker " )
+        print("Failed to connect to mqtt broker " )
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_MQTTmessage(client, userdata, msg):
     payload = str(msg.payload)
-    print("Incomming message - topic: " + msg.topic + ", payload: " + payload)
+    print("Incoming message - topic: " + msg.topic + ", payload: " + payload)
     topicParts = msg.topic.split("/")
     if on_message is not None:
         on_message(topicParts[-1], msg.payload)
 
 def on_MQTTSubscribed(client, userdata, mid, granted_qos):
-    print("subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
+    print("Subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
 
 
 #private reference to the mqtt client object for which we reserve a mem loc from the start
@@ -103,17 +103,18 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
 
-def send(value, sensorId):
+def send(value, assetId):
     if ClientId is None:
         print("ClientId not specifie")
         raise Exception("ClientId not specified")
     if DeviceId is None:
         print("device id not specified")
         raise Exception("DeviceId not specified")
-    if sensorId is None:
+    if assetId is None:
         print("sensor id not specified")
         raise Exception("sensorId not specified")
     timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
     toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
-    topic = "f/" + ClientId + "/d/" + DeviceId + "/a/" + sensorId            # also need a topic to publish to
+    topic = "f/" + ClientId + "/a/" + DeviceId + assetId # also need a topic to publish to
+    print("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
