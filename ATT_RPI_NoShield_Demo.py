@@ -11,9 +11,9 @@ from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
 
-IOT.DeviceId = "53c42442552e13c9f04fff04"
-IOT.ClientId = "53b5d14a552e13d4109bbd5c"
-IOT.ClientKey = "ryluklo4zsk"
+IOT.DeviceId = "YourDeviceIdHere"
+IOT.ClientId = "YourClientIdHere"
+IOT.ClientKey = "YourClientKeyHere"
 
 SensorName = "Button"                                #name of the button
 SensorPrev = False                                   #previous value of the button

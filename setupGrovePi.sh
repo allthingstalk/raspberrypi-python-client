@@ -1,5 +1,5 @@
-sudo apt-get install python-dev
-sudo apt-get install python-pip
+sudo apt-get -y install python-dev
+sudo apt-get -y install python-pip
 sudo easy_install -U distribute
 git clone https://github.com/DexterInd/GrovePi 
 cd GrovePi/Script
