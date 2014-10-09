@@ -20,3 +20,5 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 [Breadboard GPIO 10 Step Guide] (https://sites.google.com/a/allthingstalk.com/smart-living-help-center/quick-start-with-raspberry-pi-breadboard-gpio-smartliving)
 
 [Noobie Guide] (https://sites.google.com/a/allthingstalk.com/smart-living-help-center/raspberry-pi-smartliving)
+
+Check the wiki pages for API documentation.
