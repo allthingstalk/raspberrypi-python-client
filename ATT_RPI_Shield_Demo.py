@@ -13,10 +13,10 @@ IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
 
-sensorName = "Button"            #name of the sensor
-sensorPrev = False                                    #previous value of the sensor (only send a value when a change occured)
+sensorName = "Button"            					#name of the sensor
+sensorPrev = False                                  #previous value of the sensor (only send a value when a change occured)
 sensorPin = 2
-sensorId = "1"                                                            #the id of the button, don't uses spaces. required for the att platform
+sensorId = "1"                                      #the id of the button, don't uses spaces. required for the att platform
 
 actuatorName = "Diode"
 actuatorPin = 4
@@ -30,13 +30,13 @@ grovepi.pinMode(actuatorPin,"OUTPUT")
 #callback: handles values sent from the cloudapp to the device
 def on_message(id, value):
     if id.endswith(actuatorId) == True:
-        value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
+        value = value.lower()                        	#make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             grovepi.digitalWrite(actuatorPin, 1)
             IOT.send("true", actuatorId)                #provide feedback to the cloud that the operation was succesful
         elif value == "false":
             grovepi.digitalWrite(actuatorPin, 0)
-            IOT.send("false", actuatorId)                #provide feedback to the cloud that the operation was succesful
+            IOT.send("false", actuatorId)               #provide feedback to the cloud that the operation was succesful
         else:
             print("unknown value: " + value)
     else:
