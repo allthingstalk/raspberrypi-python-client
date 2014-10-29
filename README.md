@@ -3,6 +3,8 @@ gif_python
 
 libraries that provide access to the ATT IOT platform, for the Python language (geared for RPI development).
 
+Check the wiki pages for [how-to's & API documentation](https://github.com/allthingstalk/gif_python/wiki).
+
 ### flavours
 There are 2 flavours of the IOT library. Use a library according to your needs.
   1. regular: The RPI will act as a single device, directly connected to the IOT platform. You are responsible for creating the device manually on the platform, any assets can be created through the script.
@@ -20,5 +22,3 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 [Breadboard GPIO 10 Step Guide] (https://sites.google.com/a/allthingstalk.com/smart-living-help-center/quick-start-with-raspberry-pi-breadboard-gpio-smartliving)
 
 [Noobie Guide] (https://sites.google.com/a/allthingstalk.com/smart-living-help-center/raspberry-pi-smartliving)
-
-Check the wiki pages for API documentation.
