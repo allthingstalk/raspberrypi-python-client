@@ -17,7 +17,7 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 ### Dependencies
   1. all libraries depend on the [paho.mqtt.client module] (http://eclipse.org/paho/clients/python/).
   
-  <!--
+<!--
 
   2. the demo template script for the gateway also relies on:
     - [pyserial] (http://pyserial.sourceforge.net/)
