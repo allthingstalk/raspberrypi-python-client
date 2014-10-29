@@ -1,0 +1,16 @@
+RPI: python tutorial
+
+1. copy raspian image to an sdcard
+2. expand file system & reboot
+3. run: sudo apt-get update     (to update all packages)
+4. prepare python, run:	
+	sudo apt-get install python-dev
+	sudo apt-get install python-pip
+	sudo easy_install -U distribute
+	sudo pip install RPi.GPIO
+	sudo pip install paho.mqtt.client
+5. copy demo file to RPI
+6. make it executable, run:
+	chmod +x ATT_RPI_Demo.py
+7. run the script:
+	sudo ./ATT_RPI_Demo.py

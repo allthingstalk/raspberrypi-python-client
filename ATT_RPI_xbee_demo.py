@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+# not yet supported
+
 import serial
 from xbee import ZigBee
 import ATT_IOT_Gateway as IOT                              #provide cloud support

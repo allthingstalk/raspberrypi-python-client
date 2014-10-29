@@ -40,7 +40,7 @@ def on_message(id, value):
         else:
             print("unknown value: " + value)
     else:
-        print("unknown actuator: " + actuatorName)
+        print("unknown actuator: " + id)
 IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp

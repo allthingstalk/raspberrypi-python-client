@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# not yet supported
 #for documentation about the mqtt lib, check https://pypi.python.org/pypi/paho-mqtt/0.9
 import paho.mqtt.client as mqtt                # provides publish-subscribe messaging support
 import calendar                                # for getting the epoch time
