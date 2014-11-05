@@ -22,7 +22,7 @@ def on_MQTTmessage(client, userdata, msg):
     print("Incoming message - topic: " + msg.topic + ", payload: " + payload)
     topicParts = msg.topic.split("/")
     if on_message is not None:
-        on_message(topicParts[-1], msg.payload)
+        on_message(topicParts[-2], msg.payload)									#we want the second last value in the array, the last one is 'command'
 
 def on_MQTTSubscribed(client, userdata, mid, granted_qos):
     print("Subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
@@ -92,13 +92,9 @@ def addDevice(deviceId, name, description):
 #subscribe to the pub-sub topic for the specified device, so we can receive
 #changes from the IOT platform
 def subscribeDevice(deviceId):
-    topic = "m/" + ClientId + "/d/xbee_" + deviceId + "/#"                            #subscribe to the topics for the device
+    topic = "client/" + ClientId + "/in/device/xbee_" + deviceId + "/+/command"                            #subscribe to the topics for the device
     print("subscribing to: " + topic)
     result = _mqttClient.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
-    print(result)
-    topic = "s" + topic[1:]
-    print("subscribing to: " + topic)
-    result = _mqttClient.subscribe(topic)
     print(result)
 
 #checks if the device already exists in the IOT platform.
@@ -142,6 +138,6 @@ def send(value, deviceId, assetId):
         raise Exception("sensorId not specified")
     timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
     toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
-    topic = "f/" + ClientId + "/a/xbee_" + deviceId + "_" + assetId # also need a topic to publish to
+    topic = "client/" + ClientId + "/out/asset/xbee_" + deviceId + "_" + assetId  + "/state" # also need a topic to publish to
     print("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
