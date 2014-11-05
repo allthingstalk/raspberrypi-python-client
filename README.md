@@ -26,6 +26,7 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 -->
 
 ### Installation
+Check out [dexter industries (makers of the GrovePi)](http://www.dexterindustries.com/GrovePi/) excellent [tutorials](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/raspberry-pi-model-b-grovepi/) on how to install the hardware.  
 With this [short tutorial](https://github.com/allthingstalk/gif_python/wiki/Quick-setup-guide), you can set up your Grove Pi and have a script running in a few easy steps.  
 
 [Breadboard GPIO 10 Step Guide] (https://sites.google.com/a/allthingstalk.com/smart-living-help-center/quick-start-with-raspberry-pi-breadboard-gpio-smartliving)
