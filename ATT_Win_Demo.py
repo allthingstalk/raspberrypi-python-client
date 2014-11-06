@@ -33,6 +33,8 @@ IOT.on_message = on_message
 IOT.ClientId = "put your client id here"
 IOT.ClientKey = "put your client key here"
 IOT.DeviceId = "put your device id here"
+IOT.BrokerUserId = "put your username for the broker here"
+IOT.BrokerPwd = "put your password for the broker here"
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()

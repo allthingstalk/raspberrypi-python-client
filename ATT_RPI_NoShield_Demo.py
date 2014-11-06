@@ -14,6 +14,8 @@ from time import sleep                             #pause the app
 IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
+IOT.BrokerUserId = "put your username for the broker here"
+IOT.BrokerPwd = "put your password for the broker here"
 
 SensorName = "Button"                                #name of the button
 SensorPrev = False                                   #previous value of the button

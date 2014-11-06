@@ -9,6 +9,8 @@ import ATT_IOT_Gateway as IOT                              #provide cloud suppor
 #set up the ATT internet of things platform
 IOT.ClientId = "YourClientId"
 IOT.ClientKey = "YourClientKey"
+IOT.BrokerUserId = "YourBrokerUsername"
+IOT.BrokerPwd = "YourBrokerPassword"
 
 #serial_port = serial.Serial('/dev/ttyUSB0', 9600)        #for linux
 serial_port = serial.Serial('COM5', 9600)                 #for windows

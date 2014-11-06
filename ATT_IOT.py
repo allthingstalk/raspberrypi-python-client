@@ -53,6 +53,10 @@ ClientId = None
 DeviceId = None
 #the key that the ATT platform generated for the specified client
 ClientKey = None
+#the user id for connecting to the broker
+BrokerUserId = None
+#the password used for connecting to the broker
+BrokerPwd = None
 
 #connect with the http server
 def connect(httpServer="beta.smartliving.io"):
@@ -95,6 +99,10 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     _mqttClient.on_connect = on_connect
     _mqttClient.on_message = on_MQTTmessage
     _mqttClient.on_subscribe = on_MQTTSubscribed
+	if(BrokerUserId is None:
+		print("BrokerUserId not specified, can't connect to broker");
+		raise Exception("BrokerUserId not specified, can't connect to broker");
+	_mqttClient.username_pw_set(BrokerUserId, BrokerPwd);
 
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
