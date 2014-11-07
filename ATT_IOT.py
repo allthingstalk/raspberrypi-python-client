@@ -55,8 +55,6 @@ DeviceId = None
 ClientKey = None
 #the user id for connecting to the broker
 BrokerUserId = None
-#the password used for connecting to the broker
-BrokerPwd = None
 
 #connect with the http server
 def connect(httpServer="beta.smartliving.io"):
@@ -102,7 +100,7 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
 	if(BrokerUserId is None:
 		print("BrokerUserId not specified, can't connect to broker");
 		raise Exception("BrokerUserId not specified, can't connect to broker");
-	_mqttClient.username_pw_set(BrokerUserId, BrokerPwd);
+	_mqttClient.username_pw_set(BrokerUserId, ClientKey);
 
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
