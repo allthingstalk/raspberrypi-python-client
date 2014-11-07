@@ -127,10 +127,10 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     _mqttClient.on_connect = on_connect
     _mqttClient.on_message = on_MQTTmessage
     _mqttClient.on_subscribe = on_MQTTSubscribed
-	if(BrokerUserId is None:
-		print("BrokerUserId not specified, can't connect to broker");
-		raise Exception("BrokerUserId not specified, can't connect to broker");
-	_mqttClient.username_pw_set(BrokerUserId, ClientKey);
+    if BrokerUserId is None:
+        print("BrokerUserId not specified, can't connect to broker");
+        raise Exception("BrokerUserId not specified, can't connect to broker");
+    _mqttClient.username_pw_set(BrokerUserId, ClientKey);
 	
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
