@@ -15,7 +15,7 @@ def on_connect(client, userdata, rc):
         if DeviceId is None:
             print("device id not specified")
             raise Exception("DeviceId not specified")
-        topic = "client/" + ClientId + "/in/device/" + DeviceId + "/+/command"
+        topic = "client/" + ClientId + "/in/device/" + DeviceId + "/asset/+/command"
         print("subscribing to: " + topic)
         result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
         print(result)
