@@ -12,7 +12,6 @@ from time import sleep                             #pause the app
 IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
-IOT.BrokerUserId = "YourBrokerUsername"
 
 sensorName = "Button"            					#name of the sensor
 sensorPrev = False                                  #previous value of the sensor (only send a value when a change occured)
