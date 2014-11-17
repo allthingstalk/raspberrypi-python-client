@@ -5,7 +5,7 @@
 # are in the same directory as this script, or installed so that they are globally accessible
 
 import grovepi                                     #provides pin support
-import ATT_IOT as IOT                              #provide cloud support
+import allthingstalk_arduino_standard_lib as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform

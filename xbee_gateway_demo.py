@@ -4,12 +4,11 @@
 
 import serial
 from xbee import ZigBee
-import ATT_IOT_Gateway as IOT                              #provide cloud support
+import allthingstalk_arduino_gateway_lib as IOT                              #provide cloud support
 
 #set up the ATT internet of things platform
 IOT.ClientId = "YourClientId"
 IOT.ClientKey = "YourClientKey"
-IOT.BrokerUserId = "YourBrokerUsername"
 
 #serial_port = serial.Serial('/dev/ttyUSB0', 9600)        #for linux
 serial_port = serial.Serial('COM5', 9600)                 #for windows

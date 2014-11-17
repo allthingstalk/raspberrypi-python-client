@@ -3,9 +3,14 @@
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
 
-import ATT_IOT as IOT                              #provide cloud support
+import allthingstalk_arduino_standard_lib as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
+#set up the ATT internet of things platform
+IOT.on_message = on_message
+IOT.ClientId = "put your client id here"
+IOT.ClientKey = "put your client key here"
+IOT.DeviceId = "put your device id here"
 
 In1Name = "Put the name of your sensor"                                #name of the button
 In1Id = "1"                                                            #the id of the button, don't uses spaces. required for the att platform
@@ -28,12 +33,6 @@ def on_message(id, value):
     else:
         print("unknown actuator: " + id)
 
-#set up the ATT internet of things platform
-IOT.on_message = on_message
-IOT.ClientId = "put your client id here"
-IOT.ClientKey = "put your client key here"
-IOT.DeviceId = "put your device id here"
-IOT.BrokerUserId = "put your username for the broker here"
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()

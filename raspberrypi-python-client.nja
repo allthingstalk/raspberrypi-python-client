@@ -3,7 +3,7 @@
   "use-tabs": false, 
   "venv": "", 
   "relatedProjects": [], 
-  "name": "GIF_Python", 
+  "name": "raspberrypi-python-client", 
   "license": "GNU General Public License v3", 
   "url": "", 
   "pythonPath": "C:\\Python27\\python.exe", 
