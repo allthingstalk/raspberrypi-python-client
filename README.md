@@ -1,9 +1,9 @@
-gif_python
+raspberrypi-python-client
 ==========
 
 libraries that provide access to the ATT IOT platform, for the Python language (geared for RPI development).
 
-Check the wiki pages for [how-to's & API documentation](https://github.com/allthingstalk/gif_python/wiki).
+Check the wiki pages for [how-to's & API documentation](https://github.com/allthingstalk/raspberrypi-python-client/wiki).
 
 <!--
 
