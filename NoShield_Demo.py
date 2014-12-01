@@ -19,11 +19,9 @@ IOT.BrokerUserId = "put your username for the broker here"
 SensorName = "Button"                                #name of the button
 SensorPrev = False                                   #previous value of the button
 SensorPin = 13
-SensorId = "1"                                       #the id of the button, don't uses spaces. required for the att platform
 
 ActuatorName = "Diode"
 ActuatorPin = 8
-ActuatorId = "2"
 
 #setup GPIO using Board numbering
 #alternative:  GPIO.setmode(GPIO.BCM)
@@ -34,25 +32,25 @@ GPIO.setup(SensorPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #, pull_up_down=GPIO.P
 GPIO.setup(ActuatorPin, GPIO.OUT)
 
 #callback: handles values sent from the cloudapp to the device
-def on_message(actuatorId, value):
-    if actuatorId.endswith(actuatorId) == True:
+def on_message(id, value):
+    if id.endswith(str(ActuatorPin)) == True:
         value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             GPIO.output(ActuatorPin, True)
-            IOT.send("true", ActuatorId)                #provide feedback to the cloud that the operation was succesful
+            IOT.send("true", ActuatorPin)                #provide feedback to the cloud that the operation was succesful
         elif value == "false":
             GPIO.output(ActuatorPin, False)
-            IOT.send("false", ActuatorId)                #provide feedback to the cloud that the operation was succesful
+            IOT.send("false", ActuatorPin)                #provide feedback to the cloud that the operation was succesful
         else:
             print("unknown value: " + value)
     else:
-        print("unknown actuator: " + actuatorId)
+        print("unknown actuator: " + id)
 IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(SensorId, SensorName, "Push button", False, "bool")
-IOT.addAsset(ActuatorId, ActuatorName, "Light Emitting Diode", True, "bool")
+IOT.addAsset(SensorPin, SensorName, "Push button", False, "bool")
+IOT.addAsset(ActuatorPin, ActuatorName, "Light Emitting Diode", True, "bool")
 IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
@@ -60,10 +58,10 @@ while True:
     if GPIO.input(SensorPin) == 0:                        #for PUD_DOWN, == 1
         if SensorPrev == False:
             print(SensorName + " activated")
-            IOT.send("true", SensorId)
+            IOT.send("true", SensorPin)
             SensorPrev = True
     elif SensorPrev == True:
         print(SensorName + " deactivated")
-        IOT.send("false", SensorId)
+        IOT.send("false", SensorPin)
         SensorPrev = False
     sleep(1)

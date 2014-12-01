@@ -69,7 +69,7 @@ def addAsset(id, name, description, isActuator, assetType):
         body = body + 'sensor'
     body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/api/asset/" + DeviceId + id
+    url = "/api/asset/" + DeviceId + str(id) 
 	
     print("HTTP PUT: " + url)
     print("HTTP HEADER: " + str(headers))
@@ -116,6 +116,6 @@ def send(value, assetId):
         raise Exception("sensorId not specified")
     timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
     toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
-    topic = "client/" + ClientId + "/out/asset/" + DeviceId + assetId + "/state"		  # also need a topic to publish to
+    topic = "client/" + ClientId + "/out/asset/" + DeviceId + str(assetId)  + "/state"		  # also need a topic to publish to
     print("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)

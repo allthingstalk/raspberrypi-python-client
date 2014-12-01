@@ -13,14 +13,14 @@ IOT.ClientKey = "put your client key here"
 IOT.DeviceId = "put your device id here"
 
 In1Name = "Put the name of your sensor"                                #name of the button
-In1Id = "1"                                                            #the id of the button, don't uses spaces. required for the att platform
+In1Id = 1                                                            #the id of the button, don't uses spaces. required for the att platform
 Out1Name = "Put the name of your actuator"
-Out1Id = "2"
+Out1Id = 2
 
 
 #callback: handles values sent from the cloudapp to the device
 def on_message(id, value):
-    if id.endswith(Out1Id) == True:
+    if id.endswith(str(Out1Id)) == True:
         value = value.lower()                        #make certain that the value is in lower case, for 'True' vs 'true'
         if value == "true":
             print("true on " + Out1Name)
