@@ -5,7 +5,7 @@
 # are in the same directory as this script, or installed so that they are globally accessible
 
 import grovepi                                     #provides pin support
-import allthingstalk_arduino_standard_lib as IOT                              #provide cloud support
+import allthingstalk_arduino_standard_lib as IOT   #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
@@ -13,13 +13,15 @@ IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
 
-sensorName = "Button"            					#name of the sensor
-sensorPrev = False                                  #previous value of the sensor (only send a value when a change occured)
+#Define each asset below. provide a Name and Pin. The Pin number is used to define the Pin number on your raspberry Pi shield 
+#and to create a unique assetId which is a combination of deviceID+Pin number. The Pin number can be any value between (0 - 2^63)
+
+sensorName = "Button"            		    #name of the sensor
 sensorPin = 2
+sensorPrev = False                                  #previous value of the sensor (only send a value when a change occured)
 
 actuatorName = "Diode"
 actuatorPin = 4
-
 
 #set up the pins
 grovepi.pinMode(sensorPin,"INPUT")
