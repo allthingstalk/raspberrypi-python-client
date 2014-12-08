@@ -13,7 +13,7 @@ IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
 
-#Define each asset below. provide a Name and Pin. The Pin number is used to define the Pin number on your raspberry Pi shield 
+#Define each asset below. provide a Name and Pin. The Pin number is used to define the Pin number on your raspberry Pi shield
 #and to create a unique assetId which is a combination of deviceID+Pin number. The Pin number can be any value between (0 - 2^63)
 
 sensorName = "Button"            		    #name of the sensor
@@ -51,13 +51,17 @@ IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
 while True:
-    if grovepi.digitalRead(sensorPin) == 1:
-        if sensorPrev == False:
-            print(sensorName + " activated")
-            IOT.send("true", sensorPin)
-            sensorPrev = True
-    elif sensorPrev == True:
-        print(sensorName + " deactivated")
-        IOT.send("false", sensorPin)
-        sensorPrev = False
-    sleep(.3)
+    try:
+        if grovepi.digitalRead(sensorPin) == 1:
+            if sensorPrev == False:
+                print(sensorName + " activated")
+                IOT.send("true", sensorPin)
+                sensorPrev = True
+        elif sensorPrev == True:
+            print(sensorName + " deactivated")
+            IOT.send("false", sensorPin)
+            sensorPrev = False
+        sleep(.3)
+
+    except IOError:
+        print ""
