@@ -32,13 +32,17 @@ IOT.subscribe()                                                                 
 
 #main loop: run as long as the device is turned on
 while True:
-    if grovepi.digitalRead(doorBell) == 1:
-        if sensorPrev == False:
-            print("DoorBell  activated")
-            IOT.send("true", doorBell)
-            sensorPrev = True
-    elif sensorPrev == True:
-        print("DoorBell  deactivated")
-        IOT.send("false", doorBell)
-        sensorPrev = False
-    sleep(.3)
+    try:
+        if grovepi.digitalRead(doorBell) == 1:
+            if sensorPrev == False:
+                print("DoorBell  activated")
+                IOT.send("true", doorBell)
+                sensorPrev = True
+        elif sensorPrev == True:
+            print("DoorBell  deactivated")
+            IOT.send("false", doorBell)
+            sensorPrev = False
+        sleep(.3)
+
+    except IOError:
+        print ""

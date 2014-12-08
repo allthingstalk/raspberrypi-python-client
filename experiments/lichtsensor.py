@@ -14,7 +14,7 @@ IOT.DeviceId = ""
 IOT.ClientId = ""
 IOT.ClientKey = ""
 
-lichtSensor = 0                                  #the PIN number of the lichtsensor, also used to construct a Unique assetID (DeviceID+nr) 
+lichtSensor = 0                                  #the PIN number of the lichtsensor, also used to construct a Unique assetID (DeviceID+nr)
 
 #set up the pins
 grovepi.pinMode(lichtSensor,"INPUT")
@@ -28,7 +28,11 @@ IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
 while True:
-    lichtValue =  grovepi.analogRead(lichtSensor)
-    print( "LichtSensor = " + str(lichtValue))
-    IOT.send(lichtValue, lichtSensor)
-    sleep(5)
+    try:
+        lichtValue =  grovepi.analogRead(lichtSensor)
+        print( "LichtSensor = " + str(lichtValue))
+        IOT.send(lichtValue, lichtSensor)
+        sleep(5)
+
+    except IOError:
+        print ""

@@ -47,14 +47,18 @@ IOT.subscribe()                                                                 
 
 #main loop: run as long as the device is turned on
 while True:
-    if grovepi.digitalRead(Pir) == 1:
-        if Pir_Prev == False:
-            print("PIR activated")
-            IOT.send("true", Pir)
-            Pir_Prev = True
-    elif Pir_Prev == True:
-        print("PIR deactivated")
-        IOT.send("false", Pir)
-        Pir_Prev = False
-    sleep(.3)
+    try:
+        if grovepi.digitalRead(Pir) == 1:
+            if Pir_Prev == False:
+                print("PIR activated")
+                IOT.send("true", Pir)
+                Pir_Prev = True
+        elif Pir_Prev == True:
+            print("PIR deactivated")
+            IOT.send("false", Pir)
+            Pir_Prev = False
+        sleep(.3)
+
+    except IOError:
+        print ""
 
