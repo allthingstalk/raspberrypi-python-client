@@ -16,13 +16,9 @@ IOT.ClientKey = ""
 
 
 Led = 4
-Buzzer = 3
-Ledbar = 2
 
 #set up the pins
 grovepi.pinMode(Led,"OUTPUT")
-grovepi.pinMode(Buzzer,"OUTPUT")
-grovepi.pinMode(Ledbar,"OUTPUT")
 
 
 #callback: handles values sent from the cloudapp to the device
@@ -37,28 +33,11 @@ def on_message(id, value):
             IOT.send("false", Led)               #provide feedback to the cloud that the operation was succesful
         else:
             print("unknown value: " + value)
-    elif id.endswith(str(Buzzer)) == True:
-        value = value.lower()                           #make certain that the value is in lower case, for 'True' vs 'true'
-        if value == "true":
-            grovepi.digitalWrite(Buzzer, 1)
-            IOT.send("true", Buzzer)                #provide feedback to the cloud that the operation was succesful
-        elif value == "false":
-            grovepi.digitalWrite(Buzzer, 0)
-            IOT.send("false", Buzzer)               #provide feedback to the cloud that the operation was succesful
-        else:
-            print("unknown value: " + value)
-    elif id.endswith(str(Ledbar)) == True:
-        grovepi.analogWrite(Ledbar, int(value/100))
-        IOT.send(int(value), Ledbar)                #provide feedback to the cloud that the operation was succesful
-    else:
-        print("unknown actuator: " + id)
 IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(Led, "LED", "Light Emitting Diode", True, "bool")
-IOT.addAsset(Buzzer, "Buzzer", "Vibration Motor", True, "bool")
-IOT.addAsset(Ledbar, "Ledbar", "LEB Bar", True, "int")
+IOT.addAsset(Led, “S”hop Light, “Shop “Window Light, True, "bool")
 IOT.subscribe()                                                                 #starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
