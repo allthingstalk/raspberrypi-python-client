@@ -6,7 +6,7 @@
 #also make certain that ATT_IOT is in the same directory as this script.
 
 import RPi.GPIO as GPIO                            #provides pin support
-import allthingstalk_arduino_standard_lib as IOT                              #provide cloud support
+import allthingstalk_python_standard_lib as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform

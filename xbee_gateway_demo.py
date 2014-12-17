@@ -4,7 +4,7 @@
 
 import serial
 from xbee import ZigBee
-import allthingstalk_arduino_gateway_lib as IOT                              #provide cloud support
+import allthingstalk_python_gateway_lib as IOT                              #provide cloud support
 
 #set up the ATT internet of things platform
 IOT.ClientId = "YourClientId"

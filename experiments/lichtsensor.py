@@ -6,7 +6,7 @@
 # are in the same directory as this script, or installed so that they are globally accessible
 
 import grovepi                                     #provides pin support
-import allthingstalk_arduino_standard_lib as IOT   #provide cloud support
+import allthingstalk_python_standard_lib as IOT   #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the SmartLiving ioT platform
