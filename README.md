@@ -38,8 +38,8 @@ or `sudo bash raspberrypi-python-client/setupNoShield.sh` if you don't have a gr
     - Push button to A2
     - Led light to D4
   2. Create the device in the IOT platform.
-  3. Open the 'Shield_Demo.py' template script: `sudo nano Shield_Demo.py`
-  3. fill in the missing strings: replace deviceId, clientId, clientKey. Optionally change/add the sensor & actuator names, pins, descriptions, types. 
+  3. Modify the template script 'Shield_Demo.py' : `sudo nano Shield_Demo.py`  
+fill in the missing strings: replace deviceId, clientId, clientKey. Optionally change/add the sensor & actuator names, pins, descriptions, types. 
   4. Run the script: `python Shield_Demo.py`
 
 
