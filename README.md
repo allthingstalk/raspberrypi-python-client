@@ -25,8 +25,11 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 -->
 
 ### Installation
-- Run `git clone https://github.com/allthingstalk/raspberrypi-python-client`
-- Run `sudo bash raspberrypi-python-client/setupGrovePi.sh`
+- Copy the library to the RPI:
+	- Run `git clone https://github.com/allthingstalk/raspberrypi-python-client`
+	- or use an ftp client to copy the library to your RPI.
+- Run `sudo bash raspberrypi-python-client/setupGrovePi.sh`  in case you have the grovePi shield
+or `sudo bash raspberrypi-python-client/setupNoShield.sh` if you don't have a grovePi shield
 
 ### Instructions
 
