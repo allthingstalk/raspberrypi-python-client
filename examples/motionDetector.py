@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 # SmartLiving Motion detector experiment
-# Important: before running this demo, make certain that grovepi & allthingstalk_arduino_standard_lib
+# Important: before running this demo, make certain that grovepi & ATT_IOT
 # are in the same directory as this script, or installed so that they are globally accessible
 
 import grovepi                                     #provides pin support
-import allthingstalk_python_standard_lib as IOT   #provide cloud support
+import ATT_IOT as IOT   					   	   #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the SmartLiving ioT platform

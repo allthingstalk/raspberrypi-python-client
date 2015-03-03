@@ -3,7 +3,7 @@
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
 
-import allthingstalk_python_standard_lib as IOT                              #provide cloud support
+import ATT_IOT as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
