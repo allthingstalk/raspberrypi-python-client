@@ -40,7 +40,7 @@ or `sudo bash raspberrypi-python-client/setupNoShield.sh` if you don't have a gr
   2. Create the device in the IOT platform.
   3. Modify the template script 'Shield_Demo.py' : `sudo nano raspberrypi-python-client/Shield_Demo.py`  
 fill in the missing strings: replace deviceId, clientId, clientKey. Optionally change/add the sensor & actuator names, pins, descriptions, types. 
-  4. Run the script: `python raspberrypi-python-client/Shield_Demo.py`
+  4. Run the script: `sudo python raspberrypi-python-client/Shield_Demo.py`
 
 
 ### Extra info
