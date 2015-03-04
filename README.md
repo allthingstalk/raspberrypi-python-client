@@ -1,9 +1,7 @@
 raspberrypi-python-client
 ==========
 
-libraries that provide access to the ATT IOT platform, for the Python language (geared for RPI development).
-
-Check the wiki pages for [how-to's & API documentation](https://github.com/allthingstalk/raspberrypi-python-client/wiki).
+A library that provide access to the ATT IOT platform, for the Python language (geared for RPI development).
 
 <!--
 
@@ -44,5 +42,8 @@ fill in the missing strings: replace deviceId, clientId, clientKey. Optionally c
 
 
 ### Extra info
-Check out [dexter industries (makers of the GrovePi)](http://www.dexterindustries.com/GrovePi/) excellent [tutorial for the RPI B+](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/raspberry-pi-model-b-grovepi/) on how to install the hardware.  
-With this [short tutorial](https://github.com/allthingstalk/raspberrypi-python-client/wiki/Quick-setup-guide), you can set up your Grove Pi and have a script running in a few easy steps. 
+
+- This [tutorial](http://docs.smartliving.io/Raspberry_Pi/more_info) contains a full recipe and detailed explenation on all aspects of the process. It guides you into setting up your Grove Pi, SD card and the platform. 
+- There's a [trouble shooting section](Raspberry_Pi/trouble_shooting) you can check out if you are having problems.
+- Also make certain that you check out all the availabile documentation that we have for the [respberry pi](http://docs.smartliving.io/Get_Started/Raspberry_Pi).
+- Check out [dexter industries (makers of the GrovePi)](http://www.dexterindustries.com/GrovePi/) excellent [tutorial for the RPI B+](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/raspberry-pi-model-b-grovepi/) on how to install the hardware.  
