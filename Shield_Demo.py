@@ -45,8 +45,8 @@ IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(sensorPin, sensorName, "Push button", False, "bool")
-IOT.addAsset(actuatorPin, actuatorName, "Light Emitting Diode", True, "bool")
+IOT.addAsset(sensorPin, sensorName, "Push button", False, "boolean")
+IOT.addAsset(actuatorPin, actuatorName, "Light Emitting Diode", True, "boolean")
 IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on

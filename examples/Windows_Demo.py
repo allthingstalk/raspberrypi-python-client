@@ -35,8 +35,8 @@ IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(In1Id, In1Name, "put your description here", False, "bool")
-IOT.addAsset(Out1Id, Out1Name, "put your description here", True, "bool")
+IOT.addAsset(In1Id, In1Name, "put your description here", False, "boolean")
+IOT.addAsset(Out1Id, Out1Name, "put your description here", True, "boolean")
 IOT.subscribe()                                        		#starts the bi-directional communication
 
 nextVal = True;

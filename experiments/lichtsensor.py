@@ -23,7 +23,7 @@ grovepi.pinMode(lichtSensor,"INPUT")
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(lichtSensor, "lichtSensor", "Licht Sensor", False, "int")
+IOT.addAsset(lichtSensor, "lichtSensor", "Licht Sensor", False, "integer")
 IOT.subscribe()              							#starts the bi-directional communication
 
 #main loop: run as long as the device is turned on

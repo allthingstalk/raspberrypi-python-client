@@ -27,7 +27,7 @@ grovepi.pinMode(doorBell,"INPUT")
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(doorBell, "DoorBell", "DoorBell", False, "bool")
+IOT.addAsset(doorBell, "DoorBell", "DoorBell", False, "boolean")
 IOT.subscribe()                                                                 #starts the bi-directional communication
 
 #main loop: run as long as the device is turned on

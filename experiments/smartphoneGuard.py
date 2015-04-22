@@ -39,7 +39,7 @@ IOT.on_message = on_message
 
 #make certain that the device & it's features are defined in the cloudapp
 IOT.connect()
-IOT.addAsset(vMotor, "vMotor", "Vibration Motor", True, "bool")
+IOT.addAsset(vMotor, "vMotor", "Vibration Motor", True, "boolean")
 IOT.subscribe()                                                                 #starts the bi-directional communication
 
 #main loop: run as long as the device is turned on
