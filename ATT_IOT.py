@@ -3,8 +3,11 @@
 #for documentation about the mqtt lib, check https://pypi.python.org/pypi/paho-mqtt/0.9
 import paho.mqtt.client as mqtt                # provides publish-subscribe messaging support
 import calendar                                # for getting the epoch time
+from datetime import datetime                  # for json date time
 import time                                    # gets the current time
 import httplib                                 # for http comm
+import types as types                          # to check on type info
+import json                                    # in case the data we need to send is complex
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -54,8 +57,8 @@ DeviceId = None
 #the key that the ATT platform generated for the specified client
 ClientKey = None
 
-#connect with the http server
 def connect(httpServer="api.smartliving.io"):
+    '''connect with the http server'''
     global _httpClient, _httpServerName                                         # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient = httplib.HTTPConnection(httpServer)
     _httpServerName = httpServer
@@ -67,7 +70,10 @@ def addAsset(id, name, description, isActuator, assetType):
         body = body + 'actuator'
     else:
         body = body + 'sensor'
-    body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
+    if assetType[0] == '{':                 # if the asset type is complex (starts with {', then render the body a little different
+        body = body + '","profile":' + assetType + ',"deviceId":"' + DeviceId + '" }'
+    else:
+        body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/api/asset/" + DeviceId + str(id) 
 	
@@ -80,10 +86,12 @@ def addAsset(id, name, description, isActuator, assetType):
     print(response.status, response.reason)
     print(response.read())
 
-#start the mqtt client and make certain that it can receive data from the IOT platform
-#mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
-#port: (optional) the port number to communicate on with the mqtt server.
+
 def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
+    '''start the mqtt client and make certain that it can receive data from the IOT platform
+	   mqttServer: (optional): the address of the mqtt server. Only supply this value if you want to a none standard server.
+	   port: (optional) the port number to communicate on with the mqtt server.
+    '''
     global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient.close()
     _httpClient = None                                                             #the http client is no longer used, so free the mem.
@@ -104,6 +112,16 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
 
+def _buildPayLoad(value):
+    typeOfVal = type(value)
+    if typeOfVal in [types.IntType, types.BooleanType, types.FloatType, types.LongType, types.StringType]:      # if it's a basic type: send as csv, otherwise as json.
+        timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
+        return str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
+    else:
+        data = {  "value": value, "at": datetime.utcnow().isoformat() }
+        return json.dumps(data)
+	
+	
 def send(value, assetId):
     if ClientId is None:
         print("ClientId not specified")
@@ -114,8 +132,7 @@ def send(value, assetId):
     if assetId is None:
         print("sensor id not specified")
         raise Exception("sensorId not specified")
-    timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
-    toSend = str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
+    toSend = _buildPayLoad(value)
     topic = "client/" + ClientId + "/out/asset/" + DeviceId + str(assetId)  + "/state"		  # also need a topic to publish to
     print("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
