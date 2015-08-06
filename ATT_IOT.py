@@ -64,12 +64,12 @@ def connect(httpServer="api.smartliving.io"):
     _httpServerName = httpServer
     print("connected with http server")
 
-def addAsset(id, name, description, isActuator, assetType):
+def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     '''Add an asset to the device.'''
 
     if not DeviceId:
         raise Exception("DeviceId not specified")
-    body = '{"name":"' + name + '","description":"' + description + '","is":"'
+    body = '{"name":"' + name + '","description":"' + description + '", "style": "' + style + '","is":"'
     if isActuator:
         body = body + 'actuator'
     else:
@@ -93,7 +93,7 @@ def addAsset(id, name, description, isActuator, assetType):
 def createDevice(name, description, activityEnabled = False):
     '''creates a new device. The Id of the device will be stored in DeviceId'''
     global DeviceId
-    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + activityEnabled + '}'
+    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + str(activityEnabled).lower() + '}'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/Device"
 
@@ -105,7 +105,7 @@ def createDevice(name, description, activityEnabled = False):
     print(response.status, response.reason)
     jsonStr =  response.read()
     print(jsonStr)
-    if response.status == 200:
+    if response.status == 201:
         d = json.loads(jsonStr)
         DeviceId = d["id"]
 
@@ -115,7 +115,7 @@ def updateDevice(name, description, activityEnabled = False):
     global DeviceId
     if not DeviceId:
         raise Exception("DeviceId not specified")
-    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + activityEnabled + '}'
+    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + str(activityEnabled).lower() + '}'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/Device/" + DeviceId
 
@@ -147,11 +147,11 @@ def deleteDevice():
     print(response.status, response.reason)
     jsonStr =  response.read()
     print(jsonStr)
-    if response.status == 200:
+    if response.status == 204:
         DeviceId = None
 
 def getPrimaryAsset():
-    '''returns the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality
+    '''returns,as a list, the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality
        of the device. Ex: a wall plug - powerswithch  can have many assets, but it's primary function is to switch on-off'''
     global DeviceId
     if not DeviceId:
