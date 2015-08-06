@@ -65,6 +65,10 @@ def connect(httpServer="api.smartliving.io"):
     print("connected with http server")
 
 def addAsset(id, name, description, isActuator, assetType):
+    '''Add an asset to the device.'''
+
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
     body = '{"name":"' + name + '","description":"' + description + '","is":"'
     if isActuator:
         body = body + 'actuator'
@@ -75,7 +79,7 @@ def addAsset(id, name, description, isActuator, assetType):
     else:
         body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/api/asset/" + DeviceId + str(id) 
+    url = "/asset/" + DeviceId + str(id)
 	
     print("HTTP PUT: " + url)
     print("HTTP HEADER: " + str(headers))
@@ -86,6 +90,171 @@ def addAsset(id, name, description, isActuator, assetType):
     print(response.status, response.reason)
     print(response.read())
 
+def createDevice(name, description, activityEnabled = False):
+    '''creates a new device. The Id of the device will be stored in DeviceId'''
+    global DeviceId
+    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + activityEnabled + '}'
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    url = "/Device"
+
+    print("HTTP POST: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY:" + body)
+    _httpClient.request("POST", url, body, headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+    if response.status == 200:
+        d = json.loads(jsonStr)
+        DeviceId = d["id"]
+
+
+def updateDevice(name, description, activityEnabled = False):
+    '''updates the definition of the device'''
+    global DeviceId
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
+    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + activityEnabled + '}'
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    url = "/Device/" + DeviceId
+
+    print("HTTP PUT: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY:" + body)
+    _httpClient.request("PUT", url, body, headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+
+def deleteDevice():
+    '''
+        Deletes the currently loaded device from the cloud.  After this function, the global DeviceId will be reset
+        to None
+    '''
+    global DeviceId
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    url = "/Device/" + DeviceId
+
+    print("HTTP DELETE: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY: None")
+    _httpClient.request("DELETE", url, "", headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+    if response.status == 200:
+        DeviceId = None
+
+def getPrimaryAsset():
+    '''returns the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality
+       of the device. Ex: a wall plug - powerswithch  can have many assets, but it's primary function is to switch on-off'''
+    global DeviceId
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
+    url = "/Device/" + DeviceId + "/assets?style=primary"
+    return doHTTPGet(url, "")
+
+
+def _buildPayLoadHTTP(value):
+    data = {"value": value, "at": datetime.utcnow().isoformat()}
+    return json.dumps(data)
+
+
+
+def sendValueHTTP(value, assetId):
+    '''Sends a new value for an asset over http. This function is similar to send, accept that the latter uses mqtt
+       while this function uses HTTP'''
+    global DeviceId
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
+    body = _buildPayLoadHTTP(value)
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    url = "/asset/" +  DeviceId + str(assetId) + "/state"
+
+    print("HTTP PUT: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY:" + body)
+    _httpClient.request("PUT", url, body, headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+
+def sendCommandTo(value, assetId):
+    '''
+        Sends a command to an asset on another device.
+        The assetId should be the full id (string), as seen on the cloud app.
+        Note: you can only send commands to actuators that belong to devices in the same account as this device.
+
+        ex: sendCommandTo('122434545abc112', 1)
+    '''
+    typeOfVal = type(value)
+    if typeOfVal in [types.IntType, types.BooleanType, types.FloatType, types.LongType, types.StringType]:      # if it's a basic type: send as csv, otherwise as json.
+        body = str(value)
+    else:
+        body = json.dumps(value)
+
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    url = "/asset/" +  assetId + "/command"
+
+    print("HTTP PUT: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY:" + body)
+    _httpClient.request("PUT", url, body, headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+
+def getAssetState(asset):
+    '''Gets the last recorded value for the specified asset.
+       When the asset is an int, it is presumed to be a local asset of this device. If it's a string, the asset
+       can be of an other device.
+    :type asset: string or int
+    :returns a json object containing the last recorded data.
+    '''
+    if type(asset) == types.IntType:
+        global DeviceId
+        if not DeviceId:
+            raise Exception("DeviceId not specified")
+        url = "/asset/" + DeviceId + str(asset) +  "/state"
+    else:
+        url = "/asset/" + asset + "/state"
+    return doHTTPGet(url, "")
+
+
+def doHTTPGet(url, content):
+    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
+    print("HTTP GET: " + url)
+    print("HTTP HEADER: " + str(headers))
+    print("HTTP BODY: None")
+    _httpClient.request("GET", url, content, headers)
+    response = _httpClient.getresponse()
+    print(response.status, response.reason)
+    jsonStr =  response.read()
+    print(jsonStr)
+    if response.status == 200:
+        return json.loads(jsonStr)
+    else:
+        return None
+
+
+def getAssets():
+    '''
+        gets the list of assets that are known for this device in the cloud
+        :returns a json array containing all the assets.
+    '''
+    global DeviceId
+    if not DeviceId:
+        raise Exception("DeviceId not specified")
+    url = "/Device/" + DeviceId + "/assets"
+
+    return doHTTPGet(url, "")
 
 def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     '''start the mqtt client and make certain that it can receive data from the IOT platform
@@ -116,7 +285,7 @@ def _buildPayLoad(value):
     typeOfVal = type(value)
     if typeOfVal in [types.IntType, types.BooleanType, types.FloatType, types.LongType, types.StringType]:      # if it's a basic type: send as csv, otherwise as json.
         timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
-        return str(timestamp) + "|" + str(value)                                            # build the string that contains the data that we want to send
+        return str(timestamp) + "|" + str(value).lower()                                          # build the string that contains the data that we want to send
     else:
         data = {  "value": value, "at": datetime.utcnow().isoformat() }
         return json.dumps(data)
