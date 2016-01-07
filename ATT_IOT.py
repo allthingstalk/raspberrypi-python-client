@@ -65,7 +65,14 @@ def connect(httpServer="api.smartliving.io"):
     print("connected with http server")
 
 def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
-    '''Add an asset to the device.'''
+    '''Add an asset to the device.
+    :param id: the local id of the asset
+    :param name: the label that should be used to show on the website
+    :param description: a description of the asset
+    :param isActuator: True if this is an actuator. When False, it's created as a Sensor
+    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://docs.smartliving.io/smartliving-maker/profiles/) example: '{"type": "integer", "minimum": 0}'.
+    :param style: possible values: 'Primary', 'Secondary', 'Config', 'Battery'
+    '''
 
     if not DeviceId:
         raise Exception("DeviceId not specified")
@@ -74,7 +81,9 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
         body = body + 'actuator'
     else:
         body = body + 'sensor'
-    if assetType[0] == '{':                 # if the asset type is complex (starts with {', then render the body a little different
+    if not assetType:
+        body = body + '","deviceId":"' + DeviceId + '" }'
+    elif assetType[0] == '{':                 # if the asset type is complex (starts with {', then render the body a little different
         body = body + '","profile":' + assetType + ',"deviceId":"' + DeviceId + '" }'
     else:
         body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
@@ -91,7 +100,11 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     print(response.read())
 
 def createDevice(name, description, activityEnabled = False):
-    '''creates a new device. The Id of the device will be stored in DeviceId'''
+    '''creates a new device. The Id of the device will be stored in DeviceId
+    :param name: the name of the device
+    :param description: an optional description
+    :param activityEnabled: When True, historical data will be stored in the cloud
+    '''
     global DeviceId
     body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + str(activityEnabled).lower() + '}'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
