@@ -84,9 +84,9 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     if not assetType:
         body = body + '","deviceId":"' + DeviceId + '" }'
     elif assetType[0] == '{':                 # if the asset type is complex (starts with {', then render the body a little different
-        body = body + '","profile":' + assetType + ',"deviceId":"' + DeviceId + '" }'
+        body = body + '","profile":' + assetType + '}'
     else:
-        body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
+        body = body + '","profile": {"type":"' + assetType + '"}}'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/device/" + DeviceId + "/asset/" +  str(id)
 	
