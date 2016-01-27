@@ -88,7 +88,7 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     else:
         body = body + '","profile": {"type":"' + assetType + '" },"deviceId":"' + DeviceId + '" }'
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/asset/" + DeviceId + str(id)
+    url = "/device/" + DeviceId + "/asset/" +  str(id)
 	
     print("HTTP PUT: " + url)
     print("HTTP HEADER: " + str(headers))
@@ -98,29 +98,6 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     response = _httpClient.getresponse()
     print(response.status, response.reason)
     print(response.read())
-
-def createDevice(name, description, activityEnabled = False):
-    '''creates a new device. The Id of the device will be stored in DeviceId
-    :param name: the name of the device
-    :param description: an optional description
-    :param activityEnabled: When True, historical data will be stored in the cloud
-    '''
-    global DeviceId
-    body = '{"name":"' + name + '","description":"' + description + '","activityEnabled":' + str(activityEnabled).lower() + '}'
-    headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/Device"
-
-    print("HTTP POST: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY:" + body)
-    _httpClient.request("POST", url, body, headers)
-    response = _httpClient.getresponse()
-    print(response.status, response.reason)
-    jsonStr =  response.read()
-    print(jsonStr)
-    if response.status == 201:
-        d = json.loads(jsonStr)
-        DeviceId = d["id"]
 
 
 def updateDevice(name, description, activityEnabled = False):
@@ -187,7 +164,7 @@ def sendValueHTTP(value, assetId):
         raise Exception("DeviceId not specified")
     body = _buildPayLoadHTTP(value)
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    url = "/asset/" +  DeviceId + str(assetId) + "/state"
+    url = "/device/" + DeviceId + "/asset/" + str(assetId) + "/state"
 
     print("HTTP PUT: " + url)
     print("HTTP HEADER: " + str(headers))
@@ -235,7 +212,7 @@ def getAssetState(asset):
         global DeviceId
         if not DeviceId:
             raise Exception("DeviceId not specified")
-        url = "/asset/" + DeviceId + str(asset) +  "/state"
+        url = "/device/" + DeviceId + "/asset/" + str(asset) +  "/state"
     else:
         url = "/asset/" + asset + "/state"
     return doHTTPGet(url, "")
@@ -315,6 +292,6 @@ def send(value, assetId):
         print("sensor id not specified")
         raise Exception("sensorId not specified")
     toSend = _buildPayLoad(value)
-    topic = "client/" + ClientId + "/out/asset/" + DeviceId + str(assetId)  + "/state"		  # also need a topic to publish to
+    topic = "client/" + ClientId + "/out/device/" + DeviceId + "/asset/" + str(assetId)  + "/state"		  # also need a topic to publish to
     print("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
