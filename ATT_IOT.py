@@ -8,39 +8,40 @@ import time                                    # gets the current time
 import httplib                                 # for http comm
 import types as types                          # to check on type info
 import json                                    # in case the data we need to send is complex
+import logging
 
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, rc):
     if rc == 0:
         msg = "Connected to mqtt broker with result code "+str(rc)
-        print(msg)
+        logging.info(msg)
         if DeviceId is None:
-            print("device id not specified")
+            logging.info("device id not specified")
             raise Exception("DeviceId not specified")
         topic = "client/" + ClientId + "/in/device/" + DeviceId + "/asset/+/command"
-        print("subscribing to: " + topic)
+        logging.info("subscribing to: " + topic)
         result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
-        print(result)
+        logging.info(result)
     else:
-        print("Failed to connect to mqtt broker: "  + mqtt.connack_string(rc))
+        logging.error("Failed to connect to mqtt broker: "  + mqtt.connack_string(rc))
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_MQTTmessage(client, userdata, msg):
     payload = str(msg.payload)
-    print("Incoming message - topic: " + msg.topic + ", payload: " + payload)
+    logging.info("Incoming message - topic: " + msg.topic + ", payload: " + payload)
     topicParts = msg.topic.split("/")
     if on_message is not None:
         on_message(topicParts[-2], msg.payload)										#we want the second last value in the array, the last one is 'command'
 
 def on_MQTTSubscribed(client, userdata, mid, granted_qos):
-    print("Subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
+    logging.info("Subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
 
 
 #private reference to the mqtt client object for which we reserve a mem loc from the start
 _mqttClient = None
-_httpServerName = None
+#_httpServerName = None
 _httpClient = None
 
 #public
@@ -59,10 +60,10 @@ ClientKey = None
 
 def connect(httpServer="api.smartliving.io"):
     '''connect with the http server'''
-    global _httpClient, _httpServerName                                         # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
+    global _httpClient#, _httpServerName                                         # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     _httpClient = httplib.HTTPConnection(httpServer)
-    _httpServerName = httpServer
-    print("connected with http server")
+    #_httpServerName = httpServer
+    logging.info("connected with http server")
 
 def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     '''Add an asset to the device.
@@ -90,14 +91,14 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/device/" + DeviceId + "/asset/" +  str(id)
 	
-    print("HTTP PUT: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY:" + body)
+    logging.info("HTTP PUT: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY:" + body)
 
     _httpClient.request("PUT", url, body, headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
-    print(response.read())
+    logging.info(str((response.status, response.reason)))
+    logging.info(response.read())
 
 
 def updateDevice(name, description, activityEnabled = False):
@@ -109,14 +110,14 @@ def updateDevice(name, description, activityEnabled = False):
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/Device/" + DeviceId
 
-    print("HTTP PUT: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY:" + body)
+    logging.info("HTTP PUT: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY:" + body)
     _httpClient.request("PUT", url, body, headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
+    logging.info(str((response.status, response.reason)))
     jsonStr =  response.read()
-    print(jsonStr)
+    logging.info(jsonStr)
 
 def deleteDevice():
     '''
@@ -129,16 +130,18 @@ def deleteDevice():
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/Device/" + DeviceId
 
-    print("HTTP DELETE: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY: None")
+    logging.info("HTTP DELETE: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY: None")
     _httpClient.request("DELETE", url, "", headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
+    logging.info(str((response.status, response.reason)))
     jsonStr =  response.read()
-    print(jsonStr)
     if response.status == 204:
+        logging.info(jsonStr)
         DeviceId = None
+    else:
+        logging.error(jsonStr)
 
 def getPrimaryAsset():
     '''returns,as a list, the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality
@@ -166,14 +169,14 @@ def sendValueHTTP(value, assetId):
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/device/" + DeviceId + "/asset/" + str(assetId) + "/state"
 
-    print("HTTP PUT: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY:" + body)
+    logging.info("HTTP PUT: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY:" + body)
     _httpClient.request("PUT", url, body, headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
+    logging.info(str((response.status, response.reason)))
     jsonStr =  response.read()
-    print(jsonStr)
+    logging.info(jsonStr)
 
 def sendCommandTo(value, assetId):
     '''
@@ -183,23 +186,20 @@ def sendCommandTo(value, assetId):
 
         ex: sendCommandTo('122434545abc112', 1)
     '''
-    typeOfVal = type(value)
-    if typeOfVal in [types.IntType, types.BooleanType, types.FloatType, types.LongType, types.StringType]:      # if it's a basic type: send as csv, otherwise as json.
-        body = str(value)
-    else:
-        body = json.dumps(value)
+    body = {"value": value }
+    body = json.dumps(body)
 
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
     url = "/asset/" +  assetId + "/command"
 
-    print("HTTP PUT: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY:" + body)
+    logging.info("HTTP PUT: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY:" + body)
     _httpClient.request("PUT", url, body, headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
-    jsonStr =  response.read()
-    print(jsonStr)
+    logging.info(str((response.status, response.reason)))
+    jsonStr = response.read()
+    logging.info(jsonStr)
 
 def getAssetState(asset):
     '''Gets the last recorded value for the specified asset.
@@ -220,17 +220,18 @@ def getAssetState(asset):
 
 def doHTTPGet(url, content):
     headers = {"Content-type": "application/json", "Auth-ClientKey": ClientKey, "Auth-ClientId": ClientId}
-    print("HTTP GET: " + url)
-    print("HTTP HEADER: " + str(headers))
-    print("HTTP BODY: None")
+    logging.info("HTTP GET: " + url)
+    logging.info("HTTP HEADER: " + str(headers))
+    logging.info("HTTP BODY: None")
     _httpClient.request("GET", url, content, headers)
     response = _httpClient.getresponse()
-    print(response.status, response.reason)
+    logging.info(str((response.status, response.reason)))
     jsonStr =  response.read()
-    print(jsonStr)
     if response.status == 200:
+        logging.info(jsonStr)
         return json.loads(jsonStr)
     else:
+        logging.error(jsonStr)
         return None
 
 
@@ -263,7 +264,7 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883):
     _mqttClient.on_message = on_MQTTmessage
     _mqttClient.on_subscribe = on_MQTTSubscribed
     if ClientId is None:
-        print("ClientId not specified, can't connect to broker")
+        logging.info("ClientId not specified, can't connect to broker")
         raise Exception("ClientId not specified, can't connect to broker")
     brokerId = ClientId + ":" + ClientId
     _mqttClient.username_pw_set(brokerId, ClientKey)
@@ -283,15 +284,15 @@ def _buildPayLoad(value):
 	
 def send(value, assetId):
     if ClientId is None:
-        print("ClientId not specified")
+        logging.error("ClientId not specified")
         raise Exception("ClientId not specified")
     if DeviceId is None:
-        print("device id not specified")
+        logging.error("device id not specified")
         raise Exception("DeviceId not specified")
     if assetId is None:
-        print("sensor id not specified")
+        logging.error("sensor id not specified")
         raise Exception("sensorId not specified")
     toSend = _buildPayLoad(value)
     topic = "client/" + ClientId + "/out/device/" + DeviceId + "/asset/" + str(assetId)  + "/state"		  # also need a topic to publish to
-    print("Publishing message - topic: " + topic + ", payload: " + toSend)
+    logging.info("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
