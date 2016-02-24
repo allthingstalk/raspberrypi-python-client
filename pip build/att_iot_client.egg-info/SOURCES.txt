@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+att_iot_client/ATT_IOT.py
+att_iot_client/__init__.py
+att_iot_client.egg-info/PKG-INFO
+att_iot_client.egg-info/SOURCES.txt
+att_iot_client.egg-info/dependency_links.txt
+att_iot_client.egg-info/requires.txt
+att_iot_client.egg-info/top_level.txt

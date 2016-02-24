@@ -4,6 +4,8 @@
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
 #also make certain that ATT_IOT is in the same directory as this script.
+import logging
+logging.getLogger().setLevel(logging.INFO)
 
 import RPi.GPIO as GPIO                            #provides pin support
 import ATT_IOT as IOT                              #provide cloud support
@@ -14,7 +16,6 @@ from time import sleep                             #pause the app
 IOT.DeviceId = "YourDeviceIdHere"
 IOT.ClientId = "YourClientIdHere"
 IOT.ClientKey = "YourClientKeyHere"
-IOT.BrokerUserId = "put your username for the broker here"
 
 SensorName = "Button"                                #name of the button
 SensorPrev = False                                   #previous value of the button

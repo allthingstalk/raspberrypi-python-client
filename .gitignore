@@ -1,2 +1,4 @@
 *.pyc
 .*
+pip build/att_iot_client
+pip build/dist

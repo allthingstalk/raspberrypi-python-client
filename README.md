@@ -29,6 +29,16 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 - Run `sudo bash raspberrypi-python-client/setupGrovePi.sh`  in case you have the grovePi shield  
 or `sudo bash raspberrypi-python-client/setupNoShield.sh` if you don't have a grovePi shield
 
+### pip
+A pip version is also available, but it will only install the library, not the grovePi dependencies. To install with pip:
+
+`sudo pip install att_iot_client`
+
+When installing with pip, imports have to be declared like so:
+
+`import att_iot_client.ATT_IOT as IOT`
+
+
 ### Instructions
 
   1. Setup the raspberry pi hardware

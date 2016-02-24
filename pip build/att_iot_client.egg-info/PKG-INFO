@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: att-iot-client
+Version: 2.1.0
+Summary: This package provides device & asset management + data feed features for the AllThingsTalk platform to your application.
+Home-page: https://github.com/allthingstalk/raspberrypi-python-client
+Author: Jan Bogaerts
+Author-email: jb@allthingstalk.com
+License: MIT
+Description: UNKNOWN
+Keywords: ATT,iot,internet of things,AllThingsTalk
+Platform: UNKNOWN

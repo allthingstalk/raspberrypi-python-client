@@ -2,14 +2,16 @@
 
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
+import logging
+logging.getLogger().setLevel(logging.INFO)
 
 import ATT_IOT as IOT                              #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
+IOT.DeviceId = "put your device id here"
 IOT.ClientId = "put your client id here"
 IOT.ClientKey = "put your client key here"
-IOT.DeviceId = "put your device id here"
 
 In1Name = "Put the name of your sensor"                                #name of the button
 In1Id = 1                                                            #the id of the button, don't uses spaces. required for the att platform
