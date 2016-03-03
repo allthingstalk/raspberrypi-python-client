@@ -79,11 +79,11 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
         raise Exception("DeviceId not specified")
     body = '{"name":"' + name + '","description":"' + description + '", "style": "' + style + '","is":"'
     if isActuator:
-        body = body + 'actuator'
+        body += 'actuator'
     else:
-        body = body + 'sensor'
+        body += 'sensor'
     if not assetType:
-        body = body + '","deviceId":"' + DeviceId + '" }'
+        body += '" }'
     elif assetType[0] == '{':                 # if the asset type is complex (starts with {', then render the body a little different
         body = body + '","profile":' + assetType + '}'
     else:
