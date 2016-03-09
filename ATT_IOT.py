@@ -22,7 +22,7 @@ def on_connect(client, userdata, rc):
         topic = "client/" + ClientId + "/in/device/" + DeviceId + "/asset/+/command"
         logging.info("subscribing to: " + topic)
         result = client.subscribe(topic)                                                    #Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
-        logging.info(result)
+        logging.info(str(result))                                                           # result is not a string on all platforms.
     else:
         logging.error("Failed to connect to mqtt broker: "  + mqtt.connack_string(rc))
 
