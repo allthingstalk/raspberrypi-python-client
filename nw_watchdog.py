@@ -20,15 +20,21 @@ _lastReceived = 0       # the ping counter that was last received.
 def ping():
     """send a ping to the server"""
     global _nextPingAt
-    _nextPingAt = datetime.datetime.now() + PingFrequency
+    _nextPingAt = datetime.datetime.now() + datetime.timedelta(0, PingFrequency)
     IOT.sendCommandTo(_pingCounter, IOT.DeviceId, WatchDogAssetId)
 
 def checkPing():
     """check if we need to resend a ping and if we received the previous ping in time"""
+    global _pingCounter
     if _nextPingAt <= datetime.datetime.now():
         if _lastReceived != _pingCounter:
             logging.error("ping didn't arrive in time, resetting connection")
             IOT._mqttClient.reconnect()
+            return False
+        else:
+            _pingCounter += 1
+
+    return True
 
 def isWatchDog(id, value):
     """check if an incomming command was a ping from the watchdog
@@ -36,8 +42,11 @@ def isWatchDog(id, value):
     :rtype: bool
     """
     global _lastReceived
-    if id == WatchDogAssetId:
+    if id == str(WatchDogAssetId):
         _lastReceived = long(value)
         logging.info("received ping: " + str(_lastReceived))
         return True
     return False
+
+def setup():
+    IOT.addAsset(WatchDogAssetId, "network watchdog", "used to verify the connectivity with the broker", True, "integer")
