@@ -33,6 +33,7 @@ def checkPing():
             return False
         else:
             _pingCounter += 1
+            ping()
 
     return True
 

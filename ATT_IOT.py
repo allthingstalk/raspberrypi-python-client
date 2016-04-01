@@ -315,7 +315,7 @@ def _buildPayLoad(value):
 	
 def send(value, assetId):
     """
-    send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
+    Use this function to send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
     :param value: the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'
 You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
     :type value: number, string, boolean, object or list

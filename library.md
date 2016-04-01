@@ -14,17 +14,17 @@ Create or update the specified asset. Call this function after calling 'connect'
 _parameters:_
 
 - `id:` the local id of the asset
-- <type>type id:</type> string or number
+<type>type id:</type> string or number
 - `name:` the label that should be used to show on the website
-- <type>type name:</type> basestring
+<type>type name:</type> basestring
 - `description:` a description of the asset
-- <type>type description:</type> basestring
+<type>type description:</type> basestring
 - `isActuator:` True if this is an actuator. When False, it's created as a Sensor
-- <type>type isActuator:</type> boolean
+<type>type isActuator:</type> boolean
 - `assetType:` the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://docs.smartliving.io/smartliving-maker/profiles/) example: '{"type": "integer", "minimum": 0}'.
-- <type>type assetType:</type> string
+<type>type assetType:</type> string
 - `style:` possible values: 'Primary', 'Secondary', 'Config', 'Battery'
-- <type>type style:</type> basestring 
+<type>type style:</type> basestring 
 
 ### connect 
 
@@ -60,7 +60,7 @@ _parameters:_
 
 - `device:` The id of the device to use. When None, the current device is queried.
 - `asset:` The id of the d
-- <type>type asset:</type> string or int
+<type>type asset:</type> string or int
 
 
 _returns_ a json object containing the last recorded data. 
@@ -74,7 +74,7 @@ getAssets()
 gets the list of assets that are known for this device in the cloud
 
 
-_returns_s a json array containing all the assets. 
+_returns_ a json array containing all the assets. 
 
 ### getPrimaryAsset 
 
@@ -89,17 +89,18 @@ of the device. Ex: a wall plug - powerswithch  can have many assets, but it's pr
 ### send 
 
 ```Python
-send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
+send(value, assetId)
 ``` 
 
+Use this function to send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
 
 _parameters:_
 
 - `value:` the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'
 You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
-- <type>type value:</type> number, string, boolean, object or list
+<type>type value:</type> number, string, boolean, object or list
 - `assetId:` the id of the asset to send the value to, usually the pin number. This is the local id that you used while creating/updating the asset through the function 'addAsset' ex: 1
-- <type>type assetId:</type> string or number 
+<type>type assetId:</type> string or number 
 
 ### sendCommandTo 
 
@@ -132,7 +133,7 @@ _parameters:_
 
 - `value:same` as for 'send' and 'sendValueHTTP'
 - `assetId:` the id of the asset to send the value to. This id must be the full id as found on the cloud app
-- <type>type assetId:</type> basestring 
+<type>type assetId:</type> basestring 
 
 ### sendValueHTTP 
 
