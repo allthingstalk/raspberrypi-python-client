@@ -2,7 +2,7 @@ from setuptools import *
 
 setup(
     name='att_iot_client',
-    version='2.1.0',
+    version='2.2.0',
     packages=find_packages(exclude=['pip', 'setuptools']),      # pip and setup tools are loaded in the virtual environment for the IDE.
     install_requires='paho-mqtt',
     url='https://github.com/allthingstalk/raspberrypi-python-client',
