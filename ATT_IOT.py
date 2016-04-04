@@ -206,7 +206,7 @@ def sendCommandToHTTP(value, assetId):
 
         ex: sendCommandTo('122434545abc112', 1)
 
-        :param value:same as for 'send' and 'sendValueHTTP'
+        :param value: same as for 'send' and 'sendValueHTTP'
         :param assetId: the id of the asset to send the value to. This id must be the full id as found on the cloud app
         :type assetId: basestring
     '''
