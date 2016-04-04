@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: att-iot-client
-Version: 2.1.0
+Version: 2.2.0
 Summary: This package provides device & asset management + data feed features for the AllThingsTalk platform to your application.
 Home-page: https://github.com/allthingstalk/raspberrypi-python-client
 Author: Jan Bogaerts
