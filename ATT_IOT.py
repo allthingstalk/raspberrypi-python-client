@@ -171,7 +171,7 @@ def getPrimaryAsset():
 
 
 def _buildPayLoadHTTP(value):
-    data = {"value": value, "at": datetime.utcnow().isoformat()}
+    data = {"value": value, "at": datetime.utcnow().isoformat() + 'Z'}
     return json.dumps(data)
 
 
