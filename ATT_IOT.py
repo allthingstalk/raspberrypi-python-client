@@ -283,8 +283,9 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883, secure = False,
 	   Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl
     '''
     global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
-    _httpClient.close()
-    _httpClient = None                                                             #the http client is no longer used, so free the mem.
+    if _httpClient:	
+        _httpClient.close()
+        _httpClient = None                                                             #the http client is no longer used, so free the mem.
     if len(DeviceId) > 23:
         mqttId = DeviceId[:23]
     else:
