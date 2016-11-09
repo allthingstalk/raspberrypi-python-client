@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright 2014-2016 AllThingsTalk
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
 #for documentation about the mqtt lib, check https://pypi.python.org/pypi/paho-mqtt/0.9
 import paho.mqtt.client as mqtt                # provides publish-subscribe messaging support
 import calendar                                # for getting the epoch time
@@ -59,7 +71,7 @@ DeviceId = None
 #the key that the ATT platform generated for the specified client
 ClientKey = None
 
-def connect(httpServer="api.smartliving.io", secure = False):
+def connect(httpServer="api.allthingstalk.io", secure = False):
     '''create an HTTP connection with the server
     :param httpServer: The dns name of the server to use for HTTP communication
     :param secure: When true, an SSL connection will be used, if available.
@@ -82,7 +94,7 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     :type description: basestring
     :param isActuator: True if this is an actuator. When False, it's created as a Sensor
     :type isActuator: boolean
-    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://docs.smartliving.io/smartliving-maker/profiles/) example: '{"type": "integer", "minimum": 0}'.
+    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://docs.AllThingsTalk.io/smartliving-maker/profiles/) example: '{"type": "integer", "minimum": 0}'.
     :type assetType: string
     :param style: possible values: 'Primary', 'Secondary', 'Config', 'Battery'
     :type style: basestring
@@ -270,22 +282,35 @@ def getAssets():
 
     return _doHTTPGet(url, "")
 
-def subscribe(mqttServer = "broker.smartliving.io", port = 1883, secure = False, certFile = 'cacert.pem'):
+def closeHttp():
+    """
+    closes the http connection, if it was open
+    :return: None
+    """
+    global _httpClient  # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
+    if _httpClient:
+        _httpClient.close()
+        _httpClient = None  # the http client is no longer used, so free the mem.
+
+def subscribe(mqttServer = "api.allthingstalk.io", port = 1883, secure = False, certFile = 'cacert.pem'):
     '''Sets up everything for the pub-sub client: create the connection, provide the credentials and register for any possible incoming data.
-	   :param mqttServer:  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = broker.smartliving.io
+    This function also closes the http connection if it was opened.
+    If you need both http and mqtt opened at the same time, it's best to open mqtt first, then open the http connection.
+	   :param mqttServer:  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = api.AllThingsTalk.io
 	   :param port: the port number to communicate on with the mqtt server. Default = 1883
-	   :param secure: When true, an SSL connection is used. Default = False.  When True, use port 8883 on broker.smartliving.io
+	   :param secure: When true, an SSL connection is used. Default = False.  When True, use port 8883 on api.AllThingsTalk.io
 	   :param certFile: certfile is a string pointing to the PEM encoded client
         certificate and private keys respectively. Note
         that if either of these files in encrypted and needs a password to
         decrypt it, Python will ask for the password at the command line. It is
         not currently possible to define a callback to provide the password.
-	   Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl
+	   Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl. At the moment, SSL is only
+	   available on the broker.smartliving.io endppoint, due to a restriction in the paho mqtt library.
+	   SSL on api.allthingstalk.io will become available as soon as the paho mqtt library has been updated.
     '''
-    global _mqttClient, _httpClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
-    if _httpClient:	
-        _httpClient.close()
-        _httpClient = None                                                             #the http client is no longer used, so free the mem.
+    global _mqttClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
+
+    closeHttp()                                                     # when starting the mqtt connection, no more need of the http connection.
     if len(DeviceId) > 23:
         mqttId = DeviceId[:23]
     else:
@@ -300,9 +325,23 @@ def subscribe(mqttServer = "broker.smartliving.io", port = 1883, secure = False,
     brokerId = ClientId + ":" + ClientId
     _mqttClient.username_pw_set(brokerId, ClientKey)
     if secure and socket.ssl:
-        _mqttClient.tls_set(certFile)
+        # todo: temporary check making certain that no certificate is used on api.allthingstalk.com, not yet supported. Will still work on broker.smartliving.io
+        if mqttServer == "api.allthingstalk.com":
+            logging.warn("SSL is not yet supported on api.allthingstalk.com, please use broker.smartliving.io. This will be corrected in the near future.")
+        else:
+            _mqttClient.tls_set(certFile)
     _mqttClient.connect(mqttServer, port, 60)
     _mqttClient.loop_start()
+
+def closeMqtt():
+    """
+    closes the mqtt connection, if opened.
+    :return: None
+    """
+    global _mqttClient
+    if _mqttClient:
+        _mqttClient.disconnect()
+        _mqttClient = None
 
 def _buildPayLoad(value):
     typeOfVal = type(value)

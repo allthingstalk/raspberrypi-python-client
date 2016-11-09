@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#   Copyright 2014-2016 AllThingsTalk
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
 #important: before running this demo, make certain that you import the library
 #'paho.mqtt.client' into python (https://pypi.python.org/pypi/paho-mqtt)
 #also make certain that ATT_IOT is in the same directory as this script.
@@ -8,7 +20,7 @@ import logging
 logging.getLogger().setLevel(logging.INFO)
 
 import RPi.GPIO as GPIO                            #provides pin support
-import ATT_IOT as IOT                              #provide cloud support
+import att_iot_client.ATT_IOT as IOT               #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform

@@ -1,4 +1,5 @@
 *.pyc
 .*
-pip build/att_iot_client
-pip build/dist
+build/
+dist/
+att_iot_client.egg-info/

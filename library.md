@@ -29,7 +29,7 @@ _parameters:_
 ### connect 
 
 ```Python
-connect(httpServer='api.smartliving.io', secure=False)
+connect(httpServer='api.AllThingsTalk.io', secure=False)
 ``` 
 
 create an HTTP connection with the server
@@ -149,16 +149,16 @@ Parameters are the same as for the send function.
 ### subscribe 
 
 ```Python
-subscribe(mqttServer='broker.smartliving.io', port=1883, secure=False, certFile='cacert.pem')
+subscribe(mqttServer='broker.AllThingsTalk.io', port=1883, secure=False, certFile='cacert.pem')
 ``` 
 
 Sets up everything for the pub-sub client: create the connection, provide the credentials and register for any possible incoming data.
 
 _parameters:_
 
-- `mqttServer:`  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = broker.smartliving.io
+- `mqttServer:`  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = broker.AllThingsTalk.io
 - `port:` the port number to communicate on with the mqtt server. Default = 1883
-- `secure:` When true, an SSL connection is used. Default = False.  When True, use port 8883 on broker.smartliving.io
+- `secure:` When true, an SSL connection is used. Default = False.  When True, use port 8883 on broker.AllThingsTalk.io
 - `certFile:` certfile is a string pointing to the PEM encoded client
 certificate and private keys respectively. Note
 that if either of these files in encrypted and needs a password to
