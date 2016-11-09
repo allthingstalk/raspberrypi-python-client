@@ -34,9 +34,7 @@ A pip version is also available, but it will only install the library, not the g
 
 `sudo pip install att_iot_client`
 
-When installing with pip, imports have to be declared like so:
-
-`import att_iot_client.ATT_IOT as IOT`
+Note: the procedure from git, running the bash command will also install the pip package, so that the library is globally available.  
 
 
 ### Instructions
@@ -53,7 +51,7 @@ fill in the missing strings: replace deviceId, clientId, clientKey. Optionally c
 
 ### Extra info
 
-- This [guide](http://docs.AllThingsTalk.io/kits/linux-raspberry-pi/stepbystep/) contains a full recipe and detailed explenation on all aspects of the process. It guides you into setting up your Grove Pi, SD card and the platform.
+- This [guide](www.allthingstalk.com/docs/kits/linux-raspberry-pi/stepbystep/) contains a full recipe and detailed explenation on all aspects of the process. It guides you into setting up your Grove Pi, SD card and the platform.
 - There's a [trouble shooting section](http://docs.AllThingsTalk.io/kits/linux-raspberry-pi/troubleshooting/) you can check out if you are having problems.
 - Also make certain that you check out all the availabile documentation that we have for the [raspberry pi](http://docs.AllThingsTalk.io/kits/linux-raspberry-pi/).
 - Check out [dexter industries (makers of the GrovePi)](http://www.dexterindustries.com/GrovePi/) excellent [tutorial for the RPI B+](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/raspberry-pi-model-b-grovepi/) on how to install the hardware.

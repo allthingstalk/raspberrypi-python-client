@@ -24,6 +24,7 @@ logging.getLogger().setLevel(logging.INFO)
 import att_iot_client.ATT_IOT as IOT               #provide cloud support
 import att_iot_client.nw_watchdog as wd
 from time import sleep                             #pause the app
+import thread
 
 #set up the ATT internet of things platform
 IOT.DeviceId = "put your device id here"
@@ -53,12 +54,25 @@ def on_message(id, value):
             print("unknown actuator: " + id)
 IOT.on_message = on_message
 
+
+def on_wd_failure():
+    """
+    best to restart the system on watchdog failure
+    :return: None
+    """
+    thread.interrupt_main()
+
+
+wd.on_failure = on_wd_failure
+
 #make certain that the device & it's features are defined in the cloudapp
-IOT.connect(secure=True)
+IOT.connect()
 wd.setup()                                             #create the assets for the watchdog
 IOT.addAsset(In1Id, In1Name, "put your description here", False, "boolean")
 IOT.addAsset(Out1Id, Out1Name, "put your description here", True, "boolean")
-IOT.subscribe(port=8883, secure=True)                 #starts the bi-directional communication
+#IOT.subscribe(port=8883, secure=True)                 #starts the bi-directional communication
+IOT.subscribe()											# note secure currently not supported on api end point, will be re-introduced shortly
+sleep(2)												# give mqtt a little time to get ready
 wd.ping()                                               #send the first ping to start the watchdog process.
 
 nextVal = True

@@ -5,9 +5,8 @@ cd /home/pi/raspberrypi-python-client	#make certain that git clone is done frmo 
 sudo pip install paho-mqtt
 sudo pip install att-iot-client
 git clone https://github.com/DexterInd/GrovePi 	
-sudo cp /home/pi/raspberrypi-python-client/GrovePi/Software/Python/grovepi.py /home/pi/raspberrypi-python-client
-sudo cp /home/pi/raspberrypi-python-client/GrovePi/Software/Python/grovepi.py /home/pi/raspberrypi-python-client/examples
-sudo cp /home/pi/raspberrypi-python-client/GrovePi/Software/Python/grovepi.py /home/pi/raspberrypi-python-client/experiments
+sudo cp GrovePi/Software/Python/grovepi.py examples
+sudo cp GrovePi/Software/Python/grovepi.py experiments
 cd GrovePi/Script
 sudo chmod +x install.sh
 sudo ./install.sh

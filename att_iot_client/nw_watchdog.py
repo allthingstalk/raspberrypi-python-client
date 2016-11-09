@@ -21,6 +21,11 @@ import ATT_IOT as IOT
 import datetime
 import logging
 
+#callback when the ping failed. Allows the client to perform special actions. Can be used to reboot the system
+# the callback is called before trying to restart the mqtt connection.
+# no parameters are used, so the signagature = def on_failaure()
+on_failure = None
+
 WatchDogAssetId = -1    #the asset id used by the watchdog. Change this if it interfers with your own asset id's.
 PingFrequency = 3000    #the frequency in seconds, that a ping is sent out (and that the system expects a ping back)
 
@@ -41,6 +46,8 @@ def checkPing():
     if _nextPingAt <= datetime.datetime.now():
         if _lastReceived != _pingCounter:
             logging.error("ping didn't arrive in time, resetting connection")
+            if on_failure:
+                on_failure()
             IOT._mqttClient.reconnect()
             return False
         else:

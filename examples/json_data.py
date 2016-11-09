@@ -19,7 +19,6 @@
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
-import grovepi                                     #provides pin support
 import att_iot_client.ATT_IOT as IOT               #provide cloud support
 from time import sleep                             #pause the app
 
