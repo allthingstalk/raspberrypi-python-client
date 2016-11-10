@@ -15,7 +15,7 @@
 #for documentation about the mqtt lib, check https://pypi.python.org/pypi/paho-mqtt/0.9
 import paho.mqtt.client as mqtt                # provides publish-subscribe messaging support
 import calendar                                # for getting the epoch time
-from datetime import datetime                  # for json date time
+from datetime import datetime, tzinfo, timedelta    # for json date time
 import time                                    # gets the current time
 import httplib                                 # for http comm
 import socket                                  # for checking if there is support for https
@@ -349,7 +349,7 @@ def _buildPayLoad(value):
         timestamp = calendar.timegm(time.gmtime())                                # we need the current epoch time so we can provide the correct time stamp.
         return str(timestamp) + "|" + str(value).lower()                                          # build the string that contains the data that we want to send
     else:
-        data = {  "value": value, "at": datetime.utcnow().isoformat() }
+        data = {  "value": value, "at": datetime.utcnow().replace(tzinfo=simple_utc()).isoformat() }
         return json.dumps(data)
 	
 	
@@ -399,3 +399,13 @@ def sendCommandTo(value,device, actuator):
     topic = "client/" + ClientId + "/in/device/" + DeviceId + "/asset/" + str(actuator)  + "/command"		  # also need a topic to publish to
     logging.info("Publishing message - topic: " + topic + ", payload: " + toSend)
     _mqttClient.publish(topic, toSend, 0, False)
+
+
+class simple_utc(tzinfo):
+    """
+    for handling time zone info correctly.
+    """
+    def tzname(self):
+        return "UTC"
+    def utcoffset(self, dt):
+        return timedelta(0)
