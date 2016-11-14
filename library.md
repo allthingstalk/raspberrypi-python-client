@@ -21,7 +21,7 @@ _parameters:_
 <type>type description:</type> basestring
 - `isActuator:` True if this is an actuator. When False, it's created as a Sensor
 <type>type isActuator:</type> boolean
-- `assetType:` the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://docs.smartliving.io/smartliving-maker/profiles/) example: '{"type": "integer", "minimum": 0}'.
+- `assetType:` the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://allthingstalk.com/docs/maker/concepts/assets/profiles/) example: '{"type": "integer", "minimum": 0}'.
 <type>type assetType:</type> string
 - `style:` possible values: 'Primary', 'Secondary', 'Config', 'Battery'
 <type>type style:</type> basestring 

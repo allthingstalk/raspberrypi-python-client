@@ -51,7 +51,7 @@ fill in the missing strings: replace deviceId, clientId, clientKey. Optionally c
 
 ### Extra info
 
-- This [guide](www.allthingstalk.com/docs/kits/linux-raspberry-pi/stepbystep/) contains a full recipe and detailed explenation on all aspects of the process. It guides you into setting up your Grove Pi, SD card and the platform.
-- There's a [trouble shooting section](http://docs.AllThingsTalk.io/kits/linux-raspberry-pi/troubleshooting/) you can check out if you are having problems.
-- Also make certain that you check out all the availabile documentation that we have for the [raspberry pi](http://docs.AllThingsTalk.io/kits/linux-raspberry-pi/).
+- This [guide](http://allthingstalk.com/docs/tutorials/raspberrypi/setup/) contains a full recipe and detailed explenation on all aspects of the process. It guides you into setting up your Grove Pi, SD card and the platform.
+- There's a [trouble shooting section](http://AllThingsTalk.com/docs/tutorials/raspberrypi/setup/#troubleshooting) you can check out if you are having problems.
+- Also make certain that you check out all the availabile documentation that we have for the [raspberry pi](http://allthingstalk.com/docs/tutorials/raspberrypi/setup/).
 - Check out [dexter industries (makers of the GrovePi)](http://www.dexterindustries.com/GrovePi/) excellent [tutorial for the RPI B+](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/raspberry-pi-model-b-grovepi/) on how to install the hardware.
