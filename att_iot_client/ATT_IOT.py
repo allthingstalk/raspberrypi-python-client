@@ -94,7 +94,7 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     :type description: basestring
     :param isActuator: True if this is an actuator. When False, it's created as a Sensor
     :type isActuator: boolean
-    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://allthingstalk.com/docs/maker/concepts/assets/profiles/) example: '{"type": "integer", "minimum": 0}'.
+    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://allthingstalk.com/docs/cloud/concepts/assets/profiles/) example: '{"type": "integer", "minimum": 0}'.
     :type assetType: string
     :param style: possible values: 'Primary', 'Secondary', 'Config', 'Battery'
     :type style: basestring

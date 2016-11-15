@@ -1,5 +1,18 @@
-# att_iot_client Module
+# att\_iot\_client.ATT_IOT Module
 
+
+## Data
+- `ClientId = None`   
+The clientId to authenticate the connection. This can be found on the website. 
+- `ClientKey = None`  
+The clientKey to authenticate the connection. This can be found on the website. 
+- `DeviceId = None`  
+The device has to be created on the website. Assign the id of the device to this variable. 
+- `on_message = None`   
+The callback function for processing actuator commands. The signatue of the callback function should be:  
+```Python
+def on_message(id, value)
+``` 
 
 ## Functions
 
@@ -26,10 +39,32 @@ _parameters:_
 - `style:` possible values: 'Primary', 'Secondary', 'Config', 'Battery'
 <type>type style:</type> basestring 
 
+### closeHttp 
+
+```Python
+closeHttp()
+``` 
+
+closes the http connection, if it was open
+
+
+_returns_: None 
+
+### closeMqtt 
+
+```Python
+closeMqtt()
+``` 
+
+closes the mqtt connection, if opened.
+
+
+_returns_: None 
+
 ### connect 
 
 ```Python
-connect(httpServer='api.AllThingsTalk.io', secure=False)
+connect(httpServer='api.allthingstalk.io', secure=False)
 ``` 
 
 create an HTTP connection with the server
@@ -131,7 +166,7 @@ ex: sendCommandTo('122434545abc112', 1)
 
 _parameters:_
 
-- `value:same` as for 'send' and 'sendValueHTTP'
+- `value:` same as for 'send' and 'sendValueHTTP'
 - `assetId:` the id of the asset to send the value to. This id must be the full id as found on the cloud app
 <type>type assetId:</type> basestring 
 
@@ -149,22 +184,26 @@ Parameters are the same as for the send function.
 ### subscribe 
 
 ```Python
-subscribe(mqttServer='broker.AllThingsTalk.io', port=1883, secure=False, certFile='cacert.pem')
+subscribe(mqttServer='api.allthingstalk.io', port=1883, secure=False, certFile='cacert.pem')
 ``` 
 
 Sets up everything for the pub-sub client: create the connection, provide the credentials and register for any possible incoming data.
+This function also closes the http connection if it was opened.
+If you need both http and mqtt opened at the same time, it's best to open mqtt first, then open the http connection.
 
 _parameters:_
 
-- `mqttServer:`  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = broker.AllThingsTalk.io
+- `mqttServer:`  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = api.AllThingsTalk.io
 - `port:` the port number to communicate on with the mqtt server. Default = 1883
-- `secure:` When true, an SSL connection is used. Default = False.  When True, use port 8883 on broker.AllThingsTalk.io
+- `secure:` When true, an SSL connection is used. Default = False.  When True, use port 8883 on api.AllThingsTalk.io
 - `certFile:` certfile is a string pointing to the PEM encoded client
 certificate and private keys respectively. Note
 that if either of these files in encrypted and needs a password to
 decrypt it, Python will ask for the password at the command line. It is
 not currently possible to define a callback to provide the password.
-Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl 
+Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl. At the moment, SSL is only
+available on the broker.smartliving.io endppoint, due to a restriction in the paho mqtt library.
+SSL on api.allthingstalk.io will become available as soon as the paho mqtt library has been updated. 
 
 ### updateDevice 
 
@@ -179,3 +218,56 @@ _parameters:_
 - `name:` The name of the device
 - `description:` the description for the device
 - `activityEnabled:` When True, historical data will be stored on the db, otherwise only the last received value is stored. 
+
+# att\_iot\_client.nw_watchdog Module
+
+This module can be used to verify the mqtt network connection and perform the required actions in case that the connection has been lost.
+
+## Data
+- `PingFrequency = 3000`  
+The time interval between consecutive pings that the watchdog sends out, expressed in milli seconds. The default values is 3 seconds.
+- `WatchDogAssetId = -1`  
+The id of the watchdog asset that will be used. By default, this is -1.
+- `on_failure = None`   
+A reference to a function that will be called when a network failure has been detected. This allows you to perform any custom actions, like rebooting the device. It's signature should be:  
+```Python
+def on_failure()
+``` 
+
+## Functions
+
+### checkPing 
+
+```Python
+checkPing()
+``` 
+
+check if we need to resend a ping and if we received the previous ping in time 
+
+### isWatchDog 
+
+```Python
+isWatchDog(id, value)
+``` 
+
+check if an incomming command was a ping from the watchdog
+
+
+_returns_: True if the id was that of the watchdog.
+		return type: bool 
+
+### ping 
+
+```Python
+ping()
+``` 
+
+send a ping to the server. 
+
+### setup 
+
+```Python
+setup()
+``` 
+
+Add the watchdog asset to the device.  This can be used as visual feedback for the state of the device. 

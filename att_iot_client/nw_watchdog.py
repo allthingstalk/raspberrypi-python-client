@@ -69,4 +69,7 @@ def isWatchDog(id, value):
     return False
 
 def setup():
+    """
+	Add the watchdog asset to the device.  This can be used as visual feedback for the state of the device.
+	"""
     IOT.addAsset(WatchDogAssetId, "network watchdog", "used to verify the connectivity with the broker", True, "integer")
