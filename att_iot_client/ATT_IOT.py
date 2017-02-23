@@ -359,7 +359,7 @@ def send(value, assetId):
     :param value: the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'
 You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
     :type value: number, string, boolean, object or list
-    :param assetId: the id of the asset to send the value to, usually the pin number. This is the local id that you used while creating/updating the asset through the function 'addAsset' ex: 1
+    :param id: the local asset identifier (asset name) of the asset to send the value to, usually the pin number. This is the same value used while creating/updating the asset through the function 'addAsset' ex: 1
     :type assetId: string or number
     """
     if ClientId is None:

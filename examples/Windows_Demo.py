@@ -21,9 +21,9 @@ import att_iot_client.ATT_IOT as IOT               #provide cloud support
 from time import sleep                             #pause the app
 
 #set up the ATT internet of things platform
-IOT.DeviceId = "VALOlfl1aPpZ7OMV7XnYbB3e"
-IOT.ClientId = "testjan"
-IOT.ClientKey = "5i4duakv2bq"
+IOT.DeviceId = ""
+IOT.ClientId = ""
+IOT.ClientKey = ""
 
 In1Name = "Put the name of your sensor"                                #name of the button
 In1Id = 1                                                            #the id of the button, don't uses spaces. required for the att platform
