@@ -72,7 +72,8 @@ DeviceId = None
 ClientKey = None
 
 def connect(httpServer="api.allthingstalk.io", secure = False):
-    '''create an HTTP connection with the server
+    '''
+    Create a HTTP connection with the server
     :param httpServer: The dns name of the server to use for HTTP communication
     :param secure: When true, an SSL connection will be used, if available.
     '''
@@ -85,7 +86,8 @@ def connect(httpServer="api.allthingstalk.io", secure = False):
     logging.info("connected with http server")
 
 def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
-    '''Create or update the specified asset. Call this function after calling 'connect' for each asset that you want to use.
+    '''
+    Create or update the specified asset. Call this function after calling 'connect' for each asset that you want to use.
     :param id: the local id of the asset
     :type id: string or number
     :param name: the label that should be used to show on the website
@@ -127,7 +129,8 @@ def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
 
 
 def updateDevice(name, description, activityEnabled = False):
-    '''updates the definition of the device
+    '''
+    Updates the definition of the device.
     :param name: The name of the device
     :param description: the description for the device
     :param activityEnabled: When True, historical data will be stored on the db, otherwise only the last received value is stored.
@@ -150,7 +153,7 @@ def updateDevice(name, description, activityEnabled = False):
 
 def deleteDevice():
     '''
-        Deletes the currently loaded device from the cloud.  After this function, the global DeviceId will be reset to None
+    Deletes the currently loaded device from the cloud.  After this function, the global DeviceId will be reset to None
     '''
     global DeviceId
     if not DeviceId:
@@ -172,9 +175,9 @@ def deleteDevice():
         logging.error(jsonStr)
 
 def getPrimaryAsset():
-    '''returns,as a list, the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality
-       of the device. Ex: a wall plug - powerswithch  can have many assets, but it's primary function is to switch on-off
-       :rtype: A json array contains all the assets that the cloud knows of for the current device and which have been labeled to be primary '''
+    '''
+    Returns, as a list, the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality of the device. Ex: a wall plug - powerswithch  can have many assets, but it's primary function is to switch on-off
+    :rtype: A json array contains all the assets that the cloud knows of for the current device and which have been labeled to be primary '''
     global DeviceId
     if not DeviceId:
         raise Exception("DeviceId not specified")
@@ -189,11 +192,10 @@ def _buildPayLoadHTTP(value):
 
 
 def sendValueHTTP(value, assetId):
-    '''Sends a new value for an asset over http. This function is similar to send, accept that the latter uses mqtt
-       while this function uses HTTP
-
-       Parameters are the same as for the send function.
-       '''
+    '''
+    Sends a new value for an asset over http. This function is similar to send, accept that the latter uses mqtt while this function uses HTTP
+    Parameters are the same as for the send function.
+    '''
     global DeviceId
     if not DeviceId:
         raise Exception("DeviceId not specified")
@@ -212,15 +214,12 @@ def sendValueHTTP(value, assetId):
 
 def sendCommandToHTTP(value, assetId):
     '''
-        Sends a command to an asset on another device using http(s).
-        The assetId should be the full id (string), as seen on the cloud app.
-        Note: you can only send commands to actuators that belong to devices in the same account as this device.
-
-        ex: sendCommandTo('122434545abc112', 1)
-
-        :param value: same as for 'send' and 'sendValueHTTP'
-        :param assetId: the id of the asset to send the value to. This id must be the full id as found on the cloud app
-        :type assetId: basestring
+    Sends a command to an asset on another device using http(s). The assetId should be the full id (string), as seen on the cloud app.
+    > You can only send commands to actuators that belong to devices in the same account as this device.
+    ex: sendCommandTo('122434545abc112', 1)
+    :param value: same as for 'send' and 'sendValueHTTP'
+    :param assetId: the id of the asset to send the value to. This id must be the full id as found on the cloud app
+    :type assetId: basestring
     '''
     body = {"value": value }
     body = json.dumps(body)
@@ -238,8 +237,9 @@ def sendCommandToHTTP(value, assetId):
     logging.info(jsonStr)
 
 def getAssetState(asset, device = None):
-    '''Gets the last recorded value for the specified asset.
-       When device is ommitted (or None), the current device is used, otherwise the device with the specified id is used.
+    '''
+    Gets the last recorded value for the specified asset.
+    When device is ommitted (or None), the current device is used, otherwise the device with the specified id is used.
     :param device: The id of the device to use. When None, the current device is queried.
     :param asset: The id of the d
     :type asset: string or int
@@ -272,8 +272,8 @@ def _doHTTPGet(url, content):
 
 def getAssets():
     '''
-        gets the list of assets that are known for this device in the cloud
-        :return a json array containing all the assets.
+    Get the list of assets that are known for this device in the cloud.
+    :return a json array containing all the assets.
     '''
     global DeviceId
     if not DeviceId:
@@ -283,30 +283,26 @@ def getAssets():
     return _doHTTPGet(url, "")
 
 def closeHttp():
-    """
-    closes the http connection, if it was open
+    '''
+    Closes the http connection, if it was open
     :return: None
-    """
+    '''
     global _httpClient  # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
     if _httpClient:
         _httpClient.close()
         _httpClient = None  # the http client is no longer used, so free the mem.
 
 def subscribe(mqttServer = "api.allthingstalk.io", port = 1883, secure = False, certFile = 'cacert.pem'):
-    '''Sets up everything for the pub-sub client: create the connection, provide the credentials and register for any possible incoming data.
-    This function also closes the http connection if it was opened.
+    '''
+    Sets up everything for the pub-sub client: create the connection, provide the credentials and register for any possible incoming data. This function also closes the http connection if it was opened.
     If you need both http and mqtt opened at the same time, it's best to open mqtt first, then open the http connection.
-	   :param mqttServer:  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = api.AllThingsTalk.io
-	   :param port: the port number to communicate on with the mqtt server. Default = 1883
-	   :param secure: When true, an SSL connection is used. Default = False.  When True, use port 8883 on api.AllThingsTalk.io
-	   :param certFile: certfile is a string pointing to the PEM encoded client
-        certificate and private keys respectively. Note
-        that if either of these files in encrypted and needs a password to
-        decrypt it, Python will ask for the password at the command line. It is
-        not currently possible to define a callback to provide the password.
-	   Note: SSL will can only be used when the mqtt lib has been compiled with support for ssl. At the moment, SSL is only
-	   available on the broker.smartliving.io endppoint, due to a restriction in the paho mqtt library.
-	   SSL on api.allthingstalk.io will become available as soon as the paho mqtt library has been updated.
+    :param mqttServer:  the address of the mqtt server. Only supply this value if you want to a none standard server. Default = api.AllThingsTalk.io
+    :param port: the port number to communicate on with the mqtt server. Default = 1883
+    :param secure: When true, an SSL connection is used. Default = False.  When True, use port 8883 on api.AllThingsTalk.io
+    :param certFile: certfile is a string pointing to the PEM encoded client certificate and private keys respectively.
+    
+    > If either of these files in encrypted and needs a password to decrypt it, Python will ask for the password at the command line. It is currently not possible to define a callback to provide the password.
+    SSL can only be used when the mqtt lib has been compiled with support for SSL.
     '''
     global _mqttClient                                             # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
 
@@ -334,10 +330,10 @@ def subscribe(mqttServer = "api.allthingstalk.io", port = 1883, secure = False, 
     _mqttClient.loop_start()
 
 def closeMqtt():
-    """
-    closes the mqtt connection, if opened.
+    '''
+    Closes the mqtt connection, if opened.
     :return: None
-    """
+    '''
     global _mqttClient
     if _mqttClient:
         _mqttClient.disconnect()
@@ -354,14 +350,13 @@ def _buildPayLoad(value):
 	
 	
 def send(value, assetId):
-    """
+    '''
     Use this function to send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
-    :param value: the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'
-You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
+    :param value: the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'. You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
     :type value: number, string, boolean, object or list
     :param id: the local asset identifier (asset name) of the asset to send the value to, usually the pin number. This is the same value used while creating/updating the asset through the function 'addAsset' ex: 1
     :type assetId: string or number
-    """
+    '''
     if ClientId is None:
         logging.error("ClientId not specified")
         raise Exception("ClientId not specified")
@@ -377,12 +372,12 @@ You can also send an object or a python list with this function to the cloud. Ob
     _mqttClient.publish(topic, toSend, 0, False)
 
 def sendCommandTo(value,device, actuator):
-    """
-    send a command to the specified actuator. The device has to be in the same account as this device)
+    '''
+    Send a command to the specified actuator. The device has to be in the same account as this device.
     :param value: the value to send
     :param device: the device id to send it to.
     :param actuator: the local id of the actuator (name)
-    """
+    '''
     if ClientId is None:
         logging.error("ClientId not specified")
         raise Exception("ClientId not specified")
@@ -402,9 +397,9 @@ def sendCommandTo(value,device, actuator):
 
 
 class simple_utc(tzinfo):
-    """
-    for handling time zone info correctly.
-    """
+    '''
+    Handling time zone info.
+    '''
     def tzname(self):
         return "UTC"
     def utcoffset(self, dt):
