@@ -46,7 +46,7 @@ def _on_MQTTmessage(client, userdata, msg):
     logging.info("Incoming message - topic: " + msg.topic + ", payload: " + payload)
     topicParts = msg.topic.split("/")
     if on_message is not None:
-        on_message(topicParts[-2], msg.payload)										#we want the second last value in the array, the last one is 'command'
+        on_message(topicParts[-2], msg.payload)		#we want the second last value in the array, the last one is 'command'
 
 def _on_MQTTSubscribed(client, userdata, mid, granted_qos):
     logging.info("Subscribed to topic, receiving data from the cloud: qos=" + str(granted_qos))
@@ -147,7 +147,7 @@ def updateDevice(name, description, activityEnabled = False):
 
 def deleteDevice():
     '''
-    Deletes the currently loaded device from the cloud.  After this function, the global DeviceId will be reset to None
+    Deletes the currently loaded device from the cloud. After this function, the global DeviceId will be reset to None
     '''
     global DeviceId
     if not DeviceId:
@@ -208,11 +208,10 @@ def sendValueHTTP(value, assetId):
 
 def sendCommandToHTTP(value, assetId):
     '''
-    Sends a command to an asset on another device using http(s). The assetId should be the full id (string), as seen on the cloud app.
-    > You can only send commands to actuators that belong to devices in the same account as this device.
-    ex: sendCommandTo('122434545abc112', 1)
+    Sends a command to an asset on another device using http(s). The assetId should be the full id (string), as seen on the cloud app. For example `sendCommandTo('122434545abc112', 1)`
     :param value: same as for 'send' and 'sendValueHTTP'
     :param assetId: `basestring` the id of the asset to send the value to. This id must be the full id as found on the cloud app
+    > You can only send commands to actuators that belong to devices in the same account as this device
     '''
     body = {"value": value }
     body = json.dumps(body)
@@ -231,8 +230,7 @@ def sendCommandToHTTP(value, assetId):
 
 def getAssetState(asset, device = None):
     '''
-    Gets the last recorded value for the specified asset.
-    When device is ommitted (or None), the current device is used, otherwise the device with the specified id is used.
+    Gets the last recorded value for the specified asset. When device is ommitted (or None), the current device is used, otherwise the device with the specified id is used.
     :param device: The id of the device to use. When None, the current device is queried.
     :param asset: `string or int` The id of the d
     :return: a json object containing the last recorded data.
@@ -276,7 +274,7 @@ def getAssets():
 
 def closeHttp():
     '''
-    Closes the http connection, if it was open
+    Closes the http connection, if it was open.
     :return: None
     '''
     global _httpClient  # we assign to these vars first, so we need to make certain that they are declared as global, otherwise we create new local vars
