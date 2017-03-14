@@ -88,18 +88,12 @@ def connect(httpServer="api.allthingstalk.io", secure = False):
 def addAsset(id, name, description, isActuator, assetType, style = "Undefined"):
     '''
     Create or update the specified asset. Call this function after calling 'connect' for each asset that you want to use.
-    :param id: the local id of the asset
-    :type id: string or number
-    :param name: the label that should be used to show on the website
-    :type name: basestring
-    :param description: a description of the asset
-    :type description: basestring
-    :param isActuator: True if this is an actuator. When False, it's created as a Sensor
-    :type isActuator: boolean
-    :param assetType: the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://allthingstalk.com/docs/cloud/concepts/assets/profiles/) example: '{"type": "integer", "minimum": 0}'.
-    :type assetType: string
-    :param style: possible values: 'Primary', 'Secondary', 'Config', 'Battery'
-    :type style: basestring
+    :param id: `string or number` the local id of the asset
+    :param name: `basestring` the label that should be used to show on the website
+    :param description: `basestring` a description of the asset
+    :param isActuator: `boolean` True if this is an actuator. When False, it's created as a Sensor
+    :param assetType: `string` the type of the asset, possible values: 'integer', 'number', 'boolean', 'text', None (defaults to string, when the asset already exists, the website will not overwrite any changes done manually on the site). Can also be a complete profile definition as a json string (see http://allthingstalk.com/docs/cloud/concepts/assets/profiles/) example: '{"type": "integer", "minimum": 0}'.
+    :param style: `basestring` possible values: 'Primary', 'Secondary', 'Config', 'Battery'
     '''
 
     if not DeviceId:
@@ -177,7 +171,7 @@ def deleteDevice():
 def getPrimaryAsset():
     '''
     Returns, as a list, the asset(s) assigned to the device as being "primary", that is, these assets represent the main functionality of the device. Ex: a wall plug - powerswithch  can have many assets, but it's primary function is to switch on-off
-    :rtype: A json array contains all the assets that the cloud knows of for the current device and which have been labeled to be primary '''
+    :return: A json array contains all the assets that the cloud knows of for the current device and which have been labeled to be primary '''
     global DeviceId
     if not DeviceId:
         raise Exception("DeviceId not specified")
@@ -218,8 +212,7 @@ def sendCommandToHTTP(value, assetId):
     > You can only send commands to actuators that belong to devices in the same account as this device.
     ex: sendCommandTo('122434545abc112', 1)
     :param value: same as for 'send' and 'sendValueHTTP'
-    :param assetId: the id of the asset to send the value to. This id must be the full id as found on the cloud app
-    :type assetId: basestring
+    :param assetId: `basestring` the id of the asset to send the value to. This id must be the full id as found on the cloud app
     '''
     body = {"value": value }
     body = json.dumps(body)
@@ -241,9 +234,8 @@ def getAssetState(asset, device = None):
     Gets the last recorded value for the specified asset.
     When device is ommitted (or None), the current device is used, otherwise the device with the specified id is used.
     :param device: The id of the device to use. When None, the current device is queried.
-    :param asset: The id of the d
-    :type asset: string or int
-    :return a json object containing the last recorded data.
+    :param asset: `string or int` The id of the d
+    :return: a json object containing the last recorded data.
     '''
     if not device:
         if not DeviceId:
@@ -273,7 +265,7 @@ def _doHTTPGet(url, content):
 def getAssets():
     '''
     Get the list of assets that are known for this device in the cloud.
-    :return a json array containing all the assets.
+    :return: a json array containing all the assets.
     '''
     global DeviceId
     if not DeviceId:
@@ -352,10 +344,8 @@ def _buildPayLoad(value):
 def send(value, assetId):
     '''
     Use this function to send a data value to the cloud server, using MQTT, for the asset with the specified id as provided by the IoT platform.
-    :param value: the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'. You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
-    :type value: number, string, boolean, object or list
-    :param id: the local asset identifier (asset name) of the asset to send the value to, usually the pin number. This is the same value used while creating/updating the asset through the function 'addAsset' ex: 1
-    :type assetId: string or number
+    :param value: `number, string, boolean, object or list` the value to send. This can be in the form of a string, int, double, bool or python object/list All primitive values are converted to a lower case string, ex: 'true' or 'false'. You can also send an object or a python list with this function to the cloud. Objects will be converted to json objects, lists become json arrays. The fields/records in the json objects or arrays must be the same as defined in the profile.
+    :param id: `string or number` the local asset identifier (asset name) of the asset to send the value to, usually the pin number. This is the same value used while creating/updating the asset through the function 'addAsset' ex: 1
     '''
     if ClientId is None:
         logging.error("ClientId not specified")
