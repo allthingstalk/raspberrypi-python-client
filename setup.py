@@ -2,9 +2,9 @@ from setuptools import *
 
 setup(
     name='att_iot_client',
-    version='3.0.3',
+    version='3.0.4',
     packages=find_packages(exclude=['pip', 'setuptools']),      # pip and setup tools are loaded in the virtual environment for the IDE.
-    install_requires='paho-mqtt',
+    install_requires='paho-mqtt==1.2.3',
     url='https://github.com/allthingstalk/raspberrypi-python-client',
     license='Apache Software License',
     author='Jan Bogaerts',
