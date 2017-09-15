@@ -1,3 +1,9 @@
+### This library is deprecated
+
+raspberry-python-client library is deprecated, and will not receive any further updates. Please use [python-sdk](https://github.com/allthingstalk/python-sdk) instead.
+
+---
+
 raspberrypi-python-client
 ==========
 
@@ -13,7 +19,7 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 
 ### Dependencies
   1. The library depend on the [paho.mqtt.client module](http://eclipse.org/paho/clients/python/).
-  
+
 
 
   2. the demo template script for the gateway also relies on:
@@ -26,7 +32,7 @@ There are 2 flavours of the IOT library. Use a library according to your needs.
 - Copy the library to the RPI:
 	- Run `git clone https://github.com/allthingstalk/raspberrypi-python-client`
 	- or use an ftp client to copy the library to your RPI.
-- Run `sudo bash raspberrypi-python-client/setupGrovePi.sh`  in case you have the grovePi shield  
+- Run `sudo bash raspberrypi-python-client/setupGrovePi.sh`  in case you have the grovePi shield
 or `sudo bash raspberrypi-python-client/setupNoShield.sh` if you don't have a grovePi shield
 
 ### pip
@@ -34,7 +40,7 @@ A pip version is also available, but it will only install the library, not the g
 
 `sudo pip install att_iot_client`
 
-Note: the procedure from git, running the bash command will also install the pip package, so that the library is globally available.  
+Note: the procedure from git, running the bash command will also install the pip package, so that the library is globally available.
 
 
 ### Instructions
@@ -44,8 +50,8 @@ Note: the procedure from git, running the bash command will also install the pip
     - Push button to A2
     - Led light to D4
   2. Create the device in the IOT platform.
-  3. Modify the template script 'Shield_Demo.py' : `sudo nano raspberrypi-python-client/Shield_Demo.py`  
-fill in the missing strings: replace deviceId, clientId, clientKey. Optionally change/add the sensor & actuator names, pins, descriptions, types. 
+  3. Modify the template script 'Shield_Demo.py' : `sudo nano raspberrypi-python-client/Shield_Demo.py`
+fill in the missing strings: replace deviceId, clientId, clientKey. Optionally change/add the sensor & actuator names, pins, descriptions, types.
   4. Run the script: `sudo python raspberrypi-python-client/Shield_Demo.py`
 
 
